@@ -51,15 +51,15 @@ const Login = props => {
   const handleInput = e => {
     e.persist();
     setError(false);
-    const input = e.target.name;
-    const value = e.target.value;
-    const valid = Validator(input, value);
+
+    const valid = Validator(e.target.name, e.target.value);
+    console.log(valid);
     updateForm(prevState => ({
       formState: {
         ...prevState.formState,
-        [input]: {
-          ...prevState.formState[input],
-          value: value,
+        [e.target.name]: {
+          ...prevState.formState[e.target.name],
+          value: e.target.value,
           valid: valid
         }
       }
@@ -110,11 +110,11 @@ const Login = props => {
       });
   };
   const showError = name => {
-    return (
-      (!form.formState[name].valid && form.formState[name].value.length > 0) ||
-      error
-    );
+    return error
+      ? error
+      : !form.formState[name].valid && form.formState[name].value.length > 0;
   };
+
   const classes = useStyles();
   return (
     <FromWrapper>

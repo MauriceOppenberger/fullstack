@@ -3,15 +3,14 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const app = express();
-const port = "3000";
 const authRoute = require("./routes/auth");
-const key = requrie("./utils/key");
+const { URL, PORT } = require("./utils/constants");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3001");
+  // res.header("Access-Control-Allow-Origin", );
   res.header(
     "Access-Control-Allow-Methods",
     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
@@ -35,10 +34,10 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(key)
-  .then(result => {
-    app.listen(port, () => {
-      console.log(`server listening on port ${port}`);
+  .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`server listening on port ${PORT}`);
     });
   })
   .catch(err => console.log(err));

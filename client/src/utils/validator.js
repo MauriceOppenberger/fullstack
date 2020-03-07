@@ -8,11 +8,13 @@ const validator = (field, value) => {
       valid = value.trim().length > 0 && value.length < 5 ? false : true;
       break;
     case "email":
-      valid =
-        value.trim().length > 0 &&
-        !value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
-          ? false
-          : true;
+      return value.trim().length <= 0
+        ? false
+        : value.trim().length > 0 &&
+          !value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+        ? false
+        : true;
+
       break;
     case "password":
       valid = !value.match(/^(?=.*\d)(?=.*[a-z])\w{5,}$/) ? false : true;
