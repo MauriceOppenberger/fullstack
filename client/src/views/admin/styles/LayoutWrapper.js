@@ -7,7 +7,7 @@ const LayoutWrapper = styled.main`
   }
   .page-body {
     display: grid;
-    grid-template-columns: 15vw auto;
+    grid-template-columns: auto 85vw;
   }
   .main {
     padding: 0 2rem;

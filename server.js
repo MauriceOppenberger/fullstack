@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const app = express();
 const authRoute = require("./routes/auth");
+const adminRoute = require("./routes/admin");
 const { URL, PORT } = require("./utils/constants");
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/auth", authRoute);
+app.use("/admin", adminRoute);
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;

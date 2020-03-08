@@ -1,19 +1,10 @@
 import styled from "styled-components";
 
 const NewIssueFormWrapper = styled.div`
-  h1,
-  h3 {
-    width: 50vw;
-    margin-left: 8vmax;
-    text-align: center;
-  }
-  form {
-    width: 50vw;
-    margin-left: 8vmax;
-  }
-  p {
-    /* margin-bottom: 3rem; */
-  }
+  width: 50vw;
+  margin: auto;
+  text-align: center;
+
   p.error {
     color: red;
   }

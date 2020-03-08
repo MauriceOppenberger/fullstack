@@ -9,7 +9,7 @@ const Sidebar = () => {
       <nav className="sidebar-nav">
         <ul className="nav-list">
           <li className="nav-item">
-            <NavLink to="/open-issues" activeClassName="active">
+            <NavLink to="/dashboard/open-issues" activeClassName="active">
               <Button
                 variant="contained"
                 size="medium"
@@ -21,7 +21,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/closed-issues">
+            <NavLink to="/dashboard/closed-issues">
               <Button
                 variant="contained"
                 size="large"
@@ -33,7 +33,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/create-new-issue">
+            <NavLink to="/dashboard/create-new-issue">
               <Button
                 variant="contained"
                 size="large"

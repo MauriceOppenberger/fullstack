@@ -1,28 +1,67 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import SingleIssue from "./SingleIssue";
 import Loading from "./Loading";
 import IssueListWrapper from "./styles/IssueListWrapper";
+import { getPosts } from "../utils/api";
+
+const fetchReducer = (state, action) => {
+  switch (action.type) {
+    case "fetching":
+      return { ...state, loading: true };
+    case "success":
+      return { ...state, posts: action.data, loading: false };
+    case "failed":
+      return { ...state, error: action.message, loading: false };
+    default:
+      return state;
+  }
+};
 const IssueList = () => {
   const [open, setOpen] = useState({
     id: null,
     open: false
   });
-  const [loading, setLoading] = useState(true);
+  const [state, dispatch] = useReducer(fetchReducer, {
+    loading: true,
+    posts: [],
+    error: null
+  });
 
   const issues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   useEffect(() => {
-    if (loading) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
-  }, [loading]);
-  const handleClick = id => {
-    setOpen({ id: id, open: true });
-  };
+    dispatch({ type: "fetching" });
 
-  if (loading) {
+    // fetch("http://localhost:3000/admin/posts", {
+    //   method: "GET",
+    //   credentials: "include",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   }
+    // })
+    getPosts()
+      .then(result => {
+        console.log(result);
+        if (result.status !== 200) {
+          const error = new Error("could not fetch");
+          throw error;
+        }
+        return result.json();
+      })
+      .then(res => {
+        console.log(res);
+        dispatch({ type: "success", data: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: "failed", message: err });
+      });
+  }, []);
+  // const handleClick = id => {
+  //   setOpen({ id: id, open: true });
+  // };
+  console.log(state);
+  if (state.loading) {
     return (
       <IssueListWrapper>
         <div className="list-container">
@@ -39,16 +78,20 @@ const IssueList = () => {
           <p>Priority: All</p>
         </div>
         <ul className="issue-list">
-          {issues.map(el => {
+          {state.posts.map(post => {
             return (
-              <li className="list-item" onClick={() => handleClick(el)}>
+              <li
+                key={post._id}
+                className="list-item"
+                // onClick={() => handleClick(post)}
+              >
                 <div className="issue-container">
                   <p>Priority: HIGH</p>
-                  <h2>Brooklyn irony organic single-origin coffee meggings</h2>
+                  <h2>Titile: {post.title}</h2>
 
                   <div className="meta-info">
                     <p>Opened: 02/20/2020</p>
-                    <p>Creator: John Doe</p>
+                    <p>Creator: {post.creator.firstName}</p>
                   </div>
                 </div>
               </li>

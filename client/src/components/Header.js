@@ -19,8 +19,22 @@ const Header = () => {
             <div className="primary-nav">
               {context.isAuth ? (
                 <ul className="primary-nav-list">
+                  <li className="primary-nav-item">
+                    <Link to="/dashboard">
+                      {" "}
+                      <Button
+                        size="medium"
+                        variant="contained"
+                        color="primary"
+                        className=""
+                        type="submit"
+                      >
+                        Dashboard
+                      </Button>
+                    </Link>
+                  </li>
                   <li
-                    onClick={() => context.updateIsAuth(false)}
+                    onClick={() => context.handleLogout()}
                     className="primary-nav-item"
                   >
                     <Link to="/">

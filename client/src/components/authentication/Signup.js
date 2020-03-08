@@ -6,6 +6,7 @@ import Validator from "../../utils/validator";
 import SignupWrapper from "./styles/SignupWrapper";
 
 import FormWrapper from "../styles/FormWrapper";
+import { signup } from "../../utils/api";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -86,28 +87,35 @@ const Signup = props => {
     for (const inputName in form.formState) {
       formIsValid = formIsValid && form.formState[inputName].valid;
     }
+
     updateFormIsValid(formIsValid);
   };
   const handleSubmit = e => {
     e.preventDefault();
 
     if (!formIsValid) {
-      setError(true);
+      // setError(true);
       console.log("Form not validated");
       return;
     }
-    fetch("http://localhost:3000/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        firstName: form.formState.firstName.value,
-        lastName: form.formState.lastName.value,
-        email: form.formState.email.value,
-        password: form.formState.password.value
-      })
-    })
+    // fetch("http://localhost:3000/auth/signup", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     firstName: form.formState.firstName.value,
+    //     lastName: form.formState.lastName.value,
+    //     email: form.formState.email.value,
+    //     password: form.formState.password.value
+    //   })
+    // })
+    signup(
+      form.formState.firstName.value,
+      form.formState.lastName.value,
+      form.formState.email.value,
+      form.formState.password.value
+    )
       .then(result => {
         if (result.status === 403) {
           const error = new Error(
@@ -246,10 +254,9 @@ const Signup = props => {
             value={form.formState["password"].value}
             onChange={handleInput}
           />
-        </div>
-        <div style={{ textAlign: "center" }}>
           {error && <p className="error">{error}</p>}
-
+        </div>
+        <div>
           <Button
             variant="contained"
             size="large"

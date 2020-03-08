@@ -3,10 +3,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import FormWrapper from "./styles/FormWrapper";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,57 +35,12 @@ const useStyles = makeStyles(theme => ({
 const NewIssueForm = props => {
   const classes = useStyles();
 
-  const [priority, setPriority] = React.useState("Medium");
-
-  const inputLabel = React.useRef(null);
-  const [labelWidth, setLabelWidth] = React.useState(0);
-  React.useEffect(() => {
-    setLabelWidth(inputLabel.current.offsetWidth);
-  }, []);
-
-  const handleChange = event => {
-    setPriority(event.target.value);
-  };
+  React.useEffect(() => {}, []);
 
   console.log(props);
   return (
     <FormWrapper>
       <form noValidate autoComplete="off">
-        <FormControl variant="outlined">
-          <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-            Priority
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            value={priority}
-            onChange={handleChange}
-            labelWidth={labelWidth}
-          >
-            <MenuItem value={"High"}>High</MenuItem>
-            <MenuItem value={"Medium"}>Medium</MenuItem>
-            <MenuItem value={"Low"}>Low</MenuItem>
-          </Select>
-        </FormControl>
-        <br />
-        <br />
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          multiple
-          type="file"
-        />
-        <label htmlFor="contained-button-file">
-          <Button
-            variant="contained"
-            className={classes.margin}
-            component="span"
-          >
-            Upload Supporting Documents
-          </Button>
-        </label>
-
         <TextField
           id="outlined-full-width"
           label="Title"

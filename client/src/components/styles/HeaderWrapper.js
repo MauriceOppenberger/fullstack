@@ -16,7 +16,10 @@ const HeaderWrapper = styled.div`
     text-align: left;
     padding: 0 3rem;
     margin: auto;
-
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
     /* Logo Container */
     .logo-container {
       flex: 1;

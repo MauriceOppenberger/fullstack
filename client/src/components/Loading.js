@@ -4,11 +4,12 @@ const Loading = () => {
   const [text, updateText] = useState("Fetching Data");
 
   useEffect(() => {
-    setTimeout(() => {
+    const id = setTimeout(() => {
       updateText(prevState => {
         return text === "Fetching Data..." ? "Fetching Data" : `${prevState}.`;
       });
     }, 300);
+    return () => clearTimeout(id);
   }, [text]);
 
   return (

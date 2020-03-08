@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import FromWrapper from "../styles/FormWrapper";
+import FromWrapper from "../components/styles/FormWrapper";
 
-import Validator from "../../utils/validator";
+import Validator from "../utils/validator";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { login } from "../../utils/api";
+import { addPost } from "../utils/api";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,14 +32,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = props => {
+const NewPost = props => {
   const [form, updateForm] = useState({
     formState: {
-      email: {
+      title: {
         value: "",
         valid: false
       },
-      password: {
+      description: {
         value: "",
         valid: false
       }
@@ -76,37 +76,36 @@ const Login = props => {
       setError(true);
       return console.log("Form not validated");
     }
-    // fetch("http://localhost:3000/auth/login", {
+    console.log("submit");
+    console.log(props);
+    // fetch("http://localhost:3000/admin/post", {
     //   method: "POST",
     //   credentials: "include",
     //   headers: {
     //     "Content-Type": "application/json"
     //   },
     //   body: JSON.stringify({
-    //     email: form.formState.email.value,
-    //     password: form.formState.password.value
+    //     title: form.formState.title.value,
+    //     description: form.formState.description.value,
+    //     userId: props.user.id
     //   })
     // })
-    login(form.formState.email.value, form.formState.password.value)
+    addPost(
+      form.formState.title.value,
+      form.formState.description.value,
+      props.user.id
+    )
       .then(result => {
-        if (result.status === 401 || result.status === 403) {
-          const error = new Error("Email or Password invalid");
-          setError(error.message);
-          throw error;
-        }
-        if (result.status !== 200) {
-          const error = new Error("Faild to Fetch Data from Server");
+        console.log(result);
+        if (result.status !== 200 && result.status !== 201) {
+          const error = new Error("Faild to Post Data");
           setError(error.message);
           throw error;
         }
         return result.json();
       })
       .then(res => {
-        props.auth(res.message);
-        props.history.push({
-          pathname: "/dashboard/",
-          state: { user: res.message }
-        });
+        props.history.push({ pathname: "/dashboard/open-issues" });
       })
       .catch(err => {
         setError(err.message);
@@ -122,10 +121,6 @@ const Login = props => {
   const classes = useStyles();
   return (
     <FromWrapper>
-      <h1>Login Page!</h1>
-      {props.location.state && (
-        <h3>You must be logged in to visit this page</h3>
-      )}
       <form
         className="authForm"
         onSubmit={handleSubmit}
@@ -136,32 +131,35 @@ const Login = props => {
           <TextField
             required
             id="outlined-full-width"
-            label="Email Address"
+            label="title"
             // style={{ margin: 8 }}
             className={classes.textField}
-            error={showError("email")}
+            error={showError("title")}
             helperText={error ? "field is required" : ""}
             FormHelperTextProps={{
               classes: {
                 root: classes.helperText
               }
             }}
+            type="text"
             fullWidth
             margin="normal"
             // InputLabelProps={{
             //   shrink: true
             // }}
             variant="outlined"
-            name="email"
-            value={form.formState["email"].value}
+            name="title"
+            value={form.formState["title"].value}
             onChange={handleInput}
           />
           <TextField
             required
-            error={showError("password")}
-            id="outlined-password-input"
-            label="Password"
-            type="password"
+            error={showError("description")}
+            multiline
+            rows="4"
+            id="outlined-multiline-static"
+            label="description"
+            type="text"
             helperText={error ? "field is required" : ""}
             FormHelperTextProps={{
               classes: {
@@ -169,12 +167,17 @@ const Login = props => {
               }
             }}
             fullWidth
+            InputProps={{
+              style: {
+                padding: "0px"
+              }
+            }}
             margin="normal"
             className={classes.textField}
             autoComplete="current-password"
             variant="outlined"
-            name="password"
-            value={form.formState["password"].value}
+            name="description"
+            value={form.formState["description"].value}
             onChange={handleInput}
           />
           {error && <p className="error">{error}</p>}
@@ -187,7 +190,7 @@ const Login = props => {
             className={classes.margin}
             type="submit"
           >
-            Login
+            submit
           </Button>
         </div>
       </form>
@@ -195,4 +198,4 @@ const Login = props => {
   );
 };
 
-export default Login;
+export default NewPost;
