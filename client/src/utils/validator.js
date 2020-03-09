@@ -2,10 +2,10 @@ const validator = (field, value) => {
   let valid;
   switch (field) {
     case "firstName":
-      valid = value.trim().length > 0 && value.length < 5 ? false : true;
+      valid = value.trim().length > 0 && value.length < 0 ? false : true;
       break;
     case "lastName":
-      valid = value.trim().length > 0 && value.length < 5 ? false : true;
+      valid = value.trim().length > 0 && value.length < 0 ? false : true;
       break;
     case "email":
       if (value.trim().length <= 0) {
@@ -29,7 +29,7 @@ const validator = (field, value) => {
       valid = value.trim().length > 0 && value.length < 0 ? false : true;
       break;
     case "description":
-      valid = value.trim().length > 0 && value.length < 25 ? false : true;
+      valid = value.trim().length > 0 && value.length < 15 ? false : true;
       break;
     default:
       break;

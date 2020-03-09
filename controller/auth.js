@@ -12,51 +12,6 @@ exports.isAuthenticated = async (req, res, next) => {
       email: req.user.email
     }
   });
-  // const auth_token = req.cookies["jwt_token"];
-
-  // if (typeof auth_token === "undefined" && !auth_token) {
-  //   res.status(403).json({ message: "No authentication token provided" });
-  //   return;
-  // }
-  /*callback function 
-
-    //   return jwt.verify(auth_token, "supersayansecuresecret", (err, decoded) => {
-    //     if (err) {
-    //       console.log(err);
-    //       err.statusCode = 500;
-    //       throw err;
-    //     }
-    //     if (!decoded) {
-    //       const error = new Error("Not authenticated");
-    //       error.statusCode = 401;
-    //       throw error;
-    //     }
-    //     const { firstName, lastName, id, email } = decoded;
-    //     res.status(200).json({ user: { firstName, lastName, id, email } });
-    //   });
-    // } else {
-    //   //Forbitten
-    //   console.log("no authentication token provided");
-    //   res.status(403).json({ message: "No authentication token provided" });
-    //   return;
-    // }
-    */
-
-  // Promise return function
-  // try {
-  //   const user = await verifyToken(auth_token);
-  //   res.status(200).json({
-  //     user: {
-  //       firstName: user.firstName,
-  //       lastName: user.lastName,
-  //       id: user.id,
-  //       email: user.email
-  //     }
-  //   });
-  // } catch (err) {
-  //   return next(err);
-  //   // res.status(403).json({ message: "No authentication token provided" });
-  // }
 };
 
 exports.signup = async (req, res, next) => {
@@ -112,26 +67,13 @@ exports.login = async (req, res, next) => {
       error.statusCode = 403;
       throw error;
     }
-
-    // const token = await jwt.sign(
-    //   {
-    //     firstName: user.firstName,
-    //     lastName: user.lastName,
-    //     email: user.email,
-    //     id: user._id.toString()
-    //   },
-    //   "supersayansecuresecret",
-    //   {
-    //     expiresIn: "1h"
-    //   }
-    // );
-    //Create JWT and set cookie
-    const token = createToken({
+    const newUser = {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       id: user._id.toString()
-    });
+    };
+    const token = createToken(newUser);
 
     //return user if password correct
     res.status(200);
@@ -139,7 +81,7 @@ exports.login = async (req, res, next) => {
       httpOnly: true,
       maxAge: 60 * 60 * 1000
     });
-    res.json({ message: user });
+    res.json({ user: newUser });
   } catch (err) {
     console.log(err);
     return next(err);

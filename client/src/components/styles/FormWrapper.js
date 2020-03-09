@@ -1,10 +1,15 @@
 import styled from "styled-components";
 
 const NewIssueFormWrapper = styled.div`
-  width: 50vw;
-  margin: auto;
-  text-align: center;
-
+  .fullwidth-container {
+    width: 50vw;
+    margin: auto;
+    text-align: center;
+  }
+  .half-container {
+    width: 50vw;
+    text-align: center;
+  }
   p.error {
     color: red;
   }

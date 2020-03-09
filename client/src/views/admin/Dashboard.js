@@ -3,11 +3,10 @@ import Layout from "./Layout";
 import { Route, Switch } from "react-router-dom";
 import IssueList from "../../components/IssueList";
 import Loading from "../../components/Loading";
-import NewIssueForm from "../../components/NewIssueForm";
 import AuthContext from "../../context/auth";
 import NewPost from "../../components/NewPost";
 
-const Dashboard = props => {
+const Dashboard = () => {
   return (
     <AuthContext.Consumer>
       {context => (

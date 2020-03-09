@@ -17,7 +17,7 @@ const Header = () => {
               </Link>
             </div>
             <div className="primary-nav">
-              {context.isAuth ? (
+              {context.user ? (
                 <ul className="primary-nav-list">
                   <li className="primary-nav-item">
                     <Link to="/dashboard">

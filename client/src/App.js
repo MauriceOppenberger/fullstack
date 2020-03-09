@@ -8,8 +8,8 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Dashboard from "./views/admin/Dashboard";
 import Public from "./views/public/Public";
 import { auth, logout } from "./utils/api";
+import CssBaseline from "@material-ui/core/CssBaseline";
 function App() {
-  const [isAuth, updateIsAuth] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -18,13 +18,6 @@ function App() {
     const id = setTimeout(() => {
       setLoading(false);
     }, 1500);
-    // fetch("/auth", {
-    //   method: "POST",
-    //   credentials: "include",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // })
     auth()
       .then(res => {
         if (res.status !== 200) {
@@ -35,7 +28,7 @@ function App() {
       })
       .then(result => {
         console.log(result);
-        updateIsAuth(true);
+
         setUser(result.user);
       })
       .catch(err => console.log(err));
@@ -43,17 +36,9 @@ function App() {
   }, []);
 
   const handleLogin = user => {
-    updateIsAuth(true);
     setUser(user);
   };
   const handleLogout = () => {
-    // fetch("/auth/logout", {
-    //   method: "POST",
-    //   credentials: "include",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // })
     logout()
       .then(res => {
         if (res.status !== 200) {
@@ -64,12 +49,10 @@ function App() {
       })
       .then(result => {
         console.log(result);
-        updateIsAuth(false);
         setUser(null);
       })
       .catch(err => console.log(err));
   };
-  console.log(isAuth);
   console.log(user);
   if (loading) {
     return (
@@ -80,7 +63,8 @@ function App() {
   }
   return (
     <div className="App">
-      <AuthContext.Provider value={{ isAuth, handleLogout, user }}>
+      <CssBaseline />
+      <AuthContext.Provider value={{ handleLogout, user }}>
         <Router>
           <Header />
           <Public handleLogin={handleLogin} />

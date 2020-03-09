@@ -1,34 +1,44 @@
 import React, { useState } from "react";
-import FromWrapper from "../components/styles/FormWrapper";
-
 import Validator from "../utils/validator";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { addPost } from "../utils/api";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    // width: "90vmin",
-    maxWidth: "500px",
-    margin: "auto",
+  paper: {
     display: "flex",
-    flexWrap: "wrap"
+    flexDirection: "column",
+    alignItems: "start",
+    maxWidth: "50vw"
   },
-  textField: {
-    marginLeft: ".5rem",
-    marginRight: ".5rem",
-    marginBottom: "2rem",
-    backgroundColor: "#fff"
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(2)
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+    maxWidth: "150px",
+    float: "right"
   },
   helperText: {
     margin: 0,
     padding: "3px 14px 0px"
   },
-
-  margin: {
-    margin: theme.spacing(1)
+  link: {
+    textDecoration: "none",
+    color: "#1976d2"
+  },
+  error: {
+    color: "red",
+    textAlign: "center",
+    fontSize: "1rem"
   }
 }));
 
@@ -48,18 +58,17 @@ const NewPost = props => {
   const [formIsValid, updateFormIsValid] = useState(false);
   const [error, setError] = useState();
 
-  const handleInput = e => {
-    e.persist();
+  const handleInput = (name, value) => {
     setError(false);
 
-    const valid = Validator(e.target.name, e.target.value);
+    const valid = Validator(name, value);
 
     updateForm(prevState => ({
       formState: {
         ...prevState.formState,
-        [e.target.name]: {
-          ...prevState.formState[e.target.name],
-          value: e.target.value,
+        [name]: {
+          ...prevState.formState[name],
+          value: value,
           valid: valid
         }
       }
@@ -76,20 +85,7 @@ const NewPost = props => {
       setError(true);
       return console.log("Form not validated");
     }
-    console.log("submit");
-    console.log(props);
-    // fetch("http://localhost:3000/admin/post", {
-    //   method: "POST",
-    //   credentials: "include",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     title: form.formState.title.value,
-    //     description: form.formState.description.value,
-    //     userId: props.user.id
-    //   })
-    // })
+
     addPost(
       form.formState.title.value,
       form.formState.description.value,
@@ -120,81 +116,74 @@ const NewPost = props => {
 
   const classes = useStyles();
   return (
-    <FromWrapper>
-      <form
-        className="authForm"
-        onSubmit={handleSubmit}
-        noValidate
-        autoComplete="off"
-      >
-        <div className={classes.root}>
-          <TextField
-            required
-            id="outlined-full-width"
-            label="title"
-            // style={{ margin: 8 }}
-            className={classes.textField}
-            error={showError("title")}
-            helperText={error ? "field is required" : ""}
-            FormHelperTextProps={{
-              classes: {
-                root: classes.helperText
-              }
-            }}
-            type="text"
-            fullWidth
-            margin="normal"
-            // InputLabelProps={{
-            //   shrink: true
-            // }}
-            variant="outlined"
-            name="title"
-            value={form.formState["title"].value}
-            onChange={handleInput}
-          />
-          <TextField
-            required
-            error={showError("description")}
-            multiline
-            rows="4"
-            id="outlined-multiline-static"
-            label="description"
-            type="text"
-            helperText={error ? "field is required" : ""}
-            FormHelperTextProps={{
-              classes: {
-                root: classes.helperText
-              }
-            }}
-            fullWidth
-            InputProps={{
-              style: {
-                padding: "0px"
-              }
-            }}
-            margin="normal"
-            className={classes.textField}
-            autoComplete="current-password"
-            variant="outlined"
-            name="description"
-            value={form.formState["description"].value}
-            onChange={handleInput}
-          />
-          {error && <p className="error">{error}</p>}
-        </div>
-        <div>
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.margin}
-            type="submit"
-          >
-            submit
-          </Button>
-        </div>
+    <div className={classes.paper}>
+      <Typography component="h1" variant="h5">
+        New Post
+      </Typography>
+
+      <form className={classes.form} onSubmit={handleSubmit} noValidate>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="title"
+          label="Title"
+          name="title"
+          autoComplete="title"
+          autoFocus
+          error={showError("title")}
+          helperText={error ? "field is required" : ""}
+          FormHelperTextProps={{
+            classes: {
+              root: classes.helperText
+            }
+          }}
+          value={form.formState["title"].value}
+          onChange={e => {
+            handleInput(e.target.name, e.target.value);
+          }}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          multiline
+          name="description"
+          label="Description"
+          type="description"
+          id="description"
+          error={showError("description")}
+          helperText={error ? "field is required" : ""}
+          value={form.formState["description"].value}
+          onChange={e => {
+            handleInput(e.target.name, e.target.value);
+          }}
+          FormHelperTextProps={{
+            classes: {
+              root: classes.helperText
+            }
+          }}
+          rows="10"
+          InputProps={{
+            style: {
+              padding: "0px"
+            }
+          }}
+        />
+        {error && <p className={classes.error}>{error}</p>}
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+        >
+          Submit
+        </Button>
       </form>
-    </FromWrapper>
+    </div>
   );
 };
 

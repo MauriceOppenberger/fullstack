@@ -10,36 +10,21 @@ const Sidebar = () => {
         <ul className="nav-list">
           <li className="nav-item">
             <NavLink to="/dashboard/open-issues" activeClassName="active">
-              <Button
-                variant="contained"
-                size="medium"
-                className="btn"
-                type="submit"
-              >
+              <Button variant="contained" className="btn" type="submit">
                 Open
               </Button>
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/dashboard/closed-issues">
-              <Button
-                variant="contained"
-                size="large"
-                className="btn"
-                type="submit"
-              >
+              <Button variant="contained" className="btn" type="submit">
                 Clossed
               </Button>
             </NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="/dashboard/create-new-issue">
-              <Button
-                variant="contained"
-                size="large"
-                className="btn"
-                type="submit"
-              >
+              <Button variant="contained" className="btn" type="submit">
                 New
               </Button>
               {/* <div className="btn nav-button">New Issue</div> */}
