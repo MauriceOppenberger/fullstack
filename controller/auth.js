@@ -1,7 +1,8 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 
-const { createToken, verifyToken } = require("../utils/token");
+const { validationResult } = require("express-validator");
+const { createToken } = require("../utils/token");
 
 exports.isAuthenticated = async (req, res, next) => {
   res.status(200).json({
@@ -15,9 +16,16 @@ exports.isAuthenticated = async (req, res, next) => {
 };
 
 exports.signup = async (req, res, next) => {
-  console.log("signup");
-
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log(errors);
+      const error = new Error("Validation failed");
+      error.statusCode = 422;
+      error.data = errors.array();
+      throw error;
+    }
+
     //Check if user already exist
     const existingUser = await User.findOne({ email: req.body.email });
 
@@ -43,13 +51,22 @@ exports.signup = async (req, res, next) => {
     res.status(201).json({ message: "user created", newUser });
   } catch (err) {
     console.log(err);
-    return next(err);
+    next(err);
   }
 };
 
 exports.login = async (req, res, next) => {
-  //find the user in the database
   try {
+    //Return for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("Validation failed");
+      error.statusCode = 422;
+      error.data = errors.array();
+      throw error;
+    }
+    //find the user in the database
+
     const user = await User.findOne({ email: req.body.email });
     //throw err if no user exists
     if (!user) {
@@ -83,8 +100,7 @@ exports.login = async (req, res, next) => {
     });
     res.json({ user: newUser });
   } catch (err) {
-    console.log(err);
-    return next(err);
+    next(err);
   }
 };
 
