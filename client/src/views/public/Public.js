@@ -6,12 +6,14 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Signup from "../../components/authentication/Signup";
 import Login from "../../components/authentication/Login";
 
+import FormikForm from "../../components/FormikForm";
+
 const Public = ({ handleLogin }) => {
   return (
     <AuthContext.Consumer>
       {context => (
         <Switch>
-          <Route exact path="/" render={props => <h1>Hello "World"</h1>} />
+          <Route exact path="/" render={props => <FormikForm {...props} />} />
           <Route
             path="/signup"
             render={props => {

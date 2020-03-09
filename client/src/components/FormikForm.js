@@ -1,21 +1,18 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
-import Checkbox from "@material-ui/core/Checkbox";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { login } from "../../utils/api";
+import { login } from "../utils/api";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -53,10 +50,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = props => {
+const FormikForm = props => {
   const classes = useStyles();
 
-  const [error, setError] = useState(null);
+  const [error, setError] = React.useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -102,19 +99,6 @@ const Login = props => {
     }
   });
 
-  const Copyright = () => {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {"Copyright © "}
-        <Link className={classes.link} color="inherit" to="/">
-          Your Website
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  };
-
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -142,13 +126,9 @@ const Login = props => {
             name="email"
             type="email"
             autoComplete="email"
-            autoFocus
-            error={formik.touched.email && formik.errors.email !== undefined}
-            helperText={
-              formik.touched.email && formik.errors.email
-                ? formik.errors.email
-                : ""
-            }
+            // autoFocus
+            error={formik.touched.email && formik.errors.email}
+            helperText={formik.errors.email ? formik.errors.email : ""}
             FormHelperTextProps={{
               classes: {
                 root: classes.helperText
@@ -156,8 +136,9 @@ const Login = props => {
             }}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.email}
+            value={formik.values.firstName}
           />
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -167,14 +148,9 @@ const Login = props => {
             label="Password"
             name="password"
             type="password"
-            error={
-              formik.touched.password && formik.errors.password !== undefined
-            }
-            helperText={
-              formik.touched.password && formik.errors.password
-                ? formik.errors.password
-                : ""
-            }
+            // autoFocus
+            error={formik.touched.password && formik.errors.password}
+            helperText={formik.errors.password ? formik.errors.password : ""}
             FormHelperTextProps={{
               classes: {
                 root: classes.helperText
@@ -184,15 +160,7 @@ const Login = props => {
             onBlur={formik.handleBlur}
             value={formik.values.password}
           />
-          {error && (
-            <div className={classes.error}>
-              <p>{error}</p>{" "}
-            </div>
-          )}
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          {error ? <div>{error}</div> : null}
           <Button
             type="submit"
             fullWidth
@@ -202,25 +170,9 @@ const Login = props => {
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link className={classes.link} to="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link className={classes.link} to="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 };
-
-export default Login;
+export default FormikForm;

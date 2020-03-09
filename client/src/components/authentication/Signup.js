@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Validator from "../../utils/validator";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -50,98 +51,53 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Signup = props => {
-  const [form, updateForm] = useState({
-    formState: {
-      firstName: {
-        value: "",
-        valid: false
-      },
-      lastName: {
-        value: "",
-        valid: false
-      },
-      email: {
-        value: "",
-        valid: false
-      },
-      password: {
-        value: "",
-        valid: false
-      }
+  const [error, setError] = useState(null);
+  const classes = useStyles();
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: ""
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required("Required"),
+      lastName: Yup.string().required("Required"),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Required"),
+      password: Yup.string()
+        .required("Required")
+        .matches(/^(?=.*\d)(?=.*[a-z])\w{5,}$/, "Invalid password")
+    }),
+    onSubmit: values => {
+      signup(values.firstName, values.lastName, values.email, values.password)
+        .then(result => {
+          if (result.status === 403) {
+            const error = new Error(
+              "email already exists, please use a valid email address"
+            );
+            setError(error.message);
+            throw error;
+          }
+          if (result.status !== 200 && result.status !== 201) {
+            const error = new Error("sign up failed");
+            setError(error.message);
+            throw error;
+          }
+          return result.json();
+        })
+        .then(res => {
+          console.log(res);
+          props.history.push("/login");
+        })
+        .catch(err => {
+          console.log(err);
+          setError(err.message);
+        });
     }
   });
-  const [formIsValid, updateFormIsValid] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleInput = (name, value) => {
-    setError(false);
-
-    const valid = Validator(name, value);
-
-    updateForm(prevState => ({
-      formState: {
-        ...prevState.formState,
-        [name]: {
-          ...prevState.formState[name],
-          value: value,
-          valid: valid
-        }
-      }
-    }));
-    // validate form
-    let formIsValid = true;
-    for (const inputName in form.formState) {
-      formIsValid = formIsValid && form.formState[inputName].valid;
-    }
-
-    updateFormIsValid(formIsValid);
-  };
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    if (!formIsValid) {
-      setError(true);
-      console.log("Form not validated");
-      return;
-    }
-
-    signup(
-      form.formState.firstName.value,
-      form.formState.lastName.value,
-      form.formState.email.value,
-      form.formState.password.value
-    )
-      .then(result => {
-        if (result.status === 403) {
-          const error = new Error(
-            "email already exists, please use a valid email address"
-          );
-          setError(error.message);
-          throw error;
-        }
-        if (result.status !== 200 && result.status !== 201) {
-          const error = new Error("sign up failed");
-          setError(error.message);
-          throw error;
-        }
-        return result.json();
-      })
-      .then(res => {
-        console.log(res);
-        props.history.push("/login");
-      })
-      .catch(err => {
-        console.log(err);
-        setError(err.message);
-      });
-  };
-  const showError = name => {
-    return (
-      (!form.formState[name].valid && form.formState[name].value.length > 0) ||
-      error
-    );
-  };
-  const classes = useStyles();
 
   function Copyright() {
     return (
@@ -164,51 +120,71 @@ const Signup = props => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={formik.handleSubmit}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
                 variant="outlined"
+                margin="normal"
                 required
                 fullWidth
                 id="firstName"
                 label="First Name"
+                name="firstName"
+                type="text"
+                autoComplete="firstName"
                 autoFocus
-                error={showError("firstName")}
-                helperText={error ? "field is required" : ""}
+                error={
+                  formik.touched.firstName &&
+                  formik.errors.firstName !== undefined
+                }
+                helperText={
+                  formik.touched.firstName && formik.errors.firstName
+                    ? formik.errors.firstName
+                    : ""
+                }
                 FormHelperTextProps={{
                   classes: {
                     root: classes.helperText
                   }
                 }}
-                value={form.formState["firstName"].value}
-                onChange={e => {
-                  handleInput(e.target.name, e.target.value);
-                }}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.firstName}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
+                margin="normal"
                 required
                 fullWidth
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="lname"
-                error={showError("lastName")}
-                helperText={error ? "field is required" : ""}
+                type="text"
+                autoComplete="lastName"
+                error={
+                  formik.touched.lastName &&
+                  formik.errors.lastName !== undefined
+                }
+                helperText={
+                  formik.touched.lastName && formik.errors.lastName
+                    ? formik.errors.lastName
+                    : ""
+                }
                 FormHelperTextProps={{
                   classes: {
                     root: classes.helperText
                   }
                 }}
-                value={form.formState["lastName"].value}
-                onChange={e => {
-                  handleInput(e.target.name, e.target.value);
-                }}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.lastName}
               />
             </Grid>
             <Grid item xs={12}>
@@ -219,18 +195,24 @@ const Signup = props => {
                 id="email"
                 label="Email Address"
                 name="email"
+                type="email"
                 autoComplete="email"
-                error={showError("email")}
-                helperText={error ? "field is required" : ""}
+                error={
+                  formik.touched.email && formik.errors.email !== undefined
+                }
+                helperText={
+                  formik.touched.email && formik.errors.email
+                    ? formik.errors.email
+                    : ""
+                }
                 FormHelperTextProps={{
                   classes: {
                     root: classes.helperText
                   }
                 }}
-                value={form.formState["email"].value}
-                onChange={e => {
-                  handleInput(e.target.name, e.target.value);
-                }}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
               />
             </Grid>
             <Grid item xs={12}>
@@ -238,25 +220,34 @@ const Signup = props => {
                 variant="outlined"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
                 id="password"
-                autoComplete="current-password"
-                error={showError("password")}
-                helperText={error ? "field is required" : ""}
+                label="Password"
+                name="password"
+                type="password"
+                error={
+                  formik.touched.password &&
+                  formik.errors.password !== undefined
+                }
+                helperText={
+                  formik.touched.password && formik.errors.password
+                    ? formik.errors.password
+                    : ""
+                }
                 FormHelperTextProps={{
                   classes: {
                     root: classes.helperText
                   }
                 }}
-                value={form.formState["password"].value}
-                onChange={e => {
-                  handleInput(e.target.name, e.target.value);
-                }}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
               />
             </Grid>
-            {error && <p className={classes.error}>{error}</p>}
+            {error && (
+              <div className={classes.error}>
+                <p>{error}</p>{" "}
+              </div>
+            )}
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -288,117 +279,5 @@ const Signup = props => {
     </Container>
   );
 };
-
-// return (
-//   <FormWrapper>
-//     <div className="fullwidth-container">
-//       <h1>Sign Up!</h1>
-//       <form
-//         className="authForm"
-//         onSubmit={handleSubmit}
-//         noValidate
-//         // autoComplete="off"
-//       >
-//         <div className={classes.root}>
-//           <TextField
-//             required
-//             id="outlined-full-width"
-//             label="Email Address"
-//             // style={{ margin: 8 }}
-//             className={classes.textField}
-//             error={showError("email")}
-//             placeholder=""
-//             fullWidth
-//             margin="normal"
-//             helperText={error ? "field is required" : ""}
-//             FormHelperTextProps={{
-//               classes: {
-//                 root: classes.helperText
-//               }
-//             }}
-//             variant="outlined"
-//             name="email"
-//             value={form.formState["email"].value}
-//             onChange={e => {
-//               handleInput(e.target.name, e.target.value);
-//             }}
-//           />
-//           <TextField
-//             error={showError("firstName")}
-//             helperText={error ? "field is required" : ""}
-//             FormHelperTextProps={{
-//               classes: {
-//                 root: classes.helperText
-//               }
-//             }}
-//             value={form.formState["firstName"].value}
-//             onChange={e => {
-//               handleInput(e.target.name, e.target.value);
-//             }}
-//           />
-//           <TextField
-//             required
-//             id="outlined-full-width"
-//             label="Last Name"
-//             error={showError("lastName")}
-//             helperText={error ? "field is required" : ""}
-//             FormHelperTextProps={{
-//               classes: {
-//                 root: classes.helperText
-//               }
-//             }}
-//             // style={{ margin: 8 }}
-//             className={classes.textField}
-//             placeholder=""
-//             fullWidth
-//             margin="normal"
-//             variant="outlined"
-//             name="lastName"
-//             value={form.formState["lastName"].value}
-//             onChange={e => {
-//               handleInput(e.target.name, e.target.value);
-//             }}
-//           />
-
-//           <TextField
-//             required
-//             error={showError("password")}
-//             helperText={error ? "field is required" : ""}
-//             FormHelperTextProps={{
-//               classes: {
-//                 root: classes.helperText
-//               }
-//             }}
-//             id="outlined-password-input"
-//             label="Password"
-//             type="password"
-//             fullWidth
-//             margin="normal"
-//             className={classes.textField}
-//             autoComplete="current-password"
-//             variant="outlined"
-//             name="password"
-//             value={form.formState["password"].value}
-//             onChange={e => {
-//               handleInput(e.target.name, e.target.value);
-//             }}
-//           />
-//           {error && <p className="error">{error}</p>}
-//         </div>
-//         <div>
-//           <Button
-//             variant="contained"
-//             size="large"
-//             color="primary"
-//             className={classes.margin}
-//             type="submit"
-//           >
-//             Sign up
-//           </Button>
-//         </div>
-//       </form>
-//     </div>
-//   </FormWrapper>
-// );
 
 export default Signup;
