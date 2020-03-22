@@ -5,7 +5,8 @@ const HeaderWrapper = styled.div`
   margin: 0;
   margin-bottom: 2rem;
   padding: 2rem 0;
-  background: var(--mainGrey);
+  box-shadow: inset 0px 1px 5px black;
+  background-color: var(--mainWhite);
 
   /* Header Container */
 

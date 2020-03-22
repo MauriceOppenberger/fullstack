@@ -1,16 +1,18 @@
 import styled from "styled-components";
 
-const SingleIssueWrapper = styled.div`
+const SinglePostWrapper = styled.div`
   padding: 0 2rem;
 
-  .issue-container {
+  .post-container {
+    /* background: var(--offWhite); */
     position: -webkit-sticky;
     position: sticky;
     top: 20px;
     padding: 2rem !important;
-    box-shadow: var(--lightShadow);
+    /* border-radius: 20px;
+    box-shadow: var(--lightShadow); */
   }
-  .issue-info {
+  .post-info {
     p {
       margin: 1rem 0;
       text-transform: capitalize;
@@ -22,4 +24,4 @@ const SingleIssueWrapper = styled.div`
   }
 `;
 
-export default SingleIssueWrapper;
+export default SinglePostWrapper;

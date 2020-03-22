@@ -2,37 +2,63 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import SidebarWrapper from "./styles/SidebarWrapper";
+import AuthContext from "../context/auth";
 
 const Sidebar = () => {
-  return (
-    <SidebarWrapper>
+  const adminSidebar = () => {
+    return (
       <nav className="sidebar-nav">
         <ul className="nav-list">
           <li className="nav-item">
-            <NavLink to="/dashboard/open-issues" activeClassName="active">
+            <NavLink to="/dashboard/open-posts" activeClassName="active">
               <Button variant="contained" className="btn" type="submit">
                 Open
               </Button>
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/dashboard/closed-issues">
+            <NavLink to="/dashboard/closed-posts">
               <Button variant="contained" className="btn" type="submit">
                 Clossed
               </Button>
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/dashboard/create-new-issue">
+            <NavLink to="/dashboard/add-new-post">
               <Button variant="contained" className="btn" type="submit">
                 New
               </Button>
-              {/* <div className="btn nav-button">New Issue</div> */}
             </NavLink>
           </li>
         </ul>
       </nav>
-    </SidebarWrapper>
+    );
+  };
+  const publicSidebar = () => {
+    return (
+      <nav className="sidebar-nav">
+        <ul className="nav-list">
+          <li className="nav-item">
+            <NavLink to="/" activeClassName="active">
+              <Button variant="contained" className="btn" type="submit">
+                Open
+              </Button>
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+    );
+  };
+  return (
+    <AuthContext.Consumer>
+      {context => {
+        return (
+          <SidebarWrapper>
+            {context.user ? adminSidebar() : publicSidebar()}
+          </SidebarWrapper>
+        );
+      }}
+    </AuthContext.Consumer>
   );
 };
 

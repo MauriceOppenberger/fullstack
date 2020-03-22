@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
@@ -6,18 +6,13 @@ import TextField from "@material-ui/core/TextField";
 
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { addPost } from "../utils/api";
+import { addComment } from "../utils/api";
 
 const useStyles = makeStyles(theme => ({
   paper: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "start",
-    maxWidth: "50vw"
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    alignItems: "start"
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -43,61 +38,64 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NewPost = props => {
+const NewComment = props => {
   const classes = useStyles();
   const [error, setError] = useState();
+  const [commentValues, updateCommentValues] = useState({
+    comment: "",
+    code: ""
+  });
+
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      description: ""
-    },
+    initialValues: commentValues,
+    enableReinitialize: true,
     validationSchema: Yup.object({
-      title: Yup.string().required("Required"),
-      description: Yup.string().required("Required")
+      comment: Yup.string().required("Required"),
+      code: Yup.string()
     }),
-    onSubmit: values => {
-      addPost(values.title, values.description, props.user.id)
-        .then(result => {
-          console.log(result);
-          if (result.status !== 200 && result.status !== 201) {
-            const error = new Error("Faild to Post Data");
-            setError(error.message);
-            throw error;
-          }
-          return result.json();
-        })
-        .then(res => {
-          props.history.push({ pathname: "/dashboard/open-issues" });
-        })
-        .catch(err => {
-          setError(err.message);
-          console.log(err);
-        });
+
+    onSubmit: async values => {
+      try {
+        const postId = props.id;
+        const result = await addComment(values, postId);
+
+        if (result.status !== 200 && result.status !== 201) {
+          const error = new Error("Faild to Post Data");
+          setError(error.message);
+          throw error;
+        }
+        const newComment = await result.json();
+        props.handleNewComment(newComment);
+      } catch (err) {
+        setError(err.message);
+        console.log(err);
+      }
     }
   });
+
+  useEffect(() => {}, []);
 
   return (
     <div className={classes.paper}>
       <Typography component="h1" variant="h5">
-        New Post
+        New Comment
       </Typography>
-
       <form className={classes.form} onSubmit={formik.handleSubmit} noValidate>
         <TextField
           variant="outlined"
           margin="normal"
           required
           fullWidth
-          id="title"
-          label="Title"
-          name="title"
-          type="text"
-          autoComplete="title"
-          autoFocus
-          error={formik.touched.title && formik.errors.title !== undefined}
+          multiline
+          name="comment"
+          label="Comment"
+          type="comment"
+          id="comment"
+          rows="5"
+          error={formik.touched.comment && formik.errors.comment !== undefined}
           helperText={
-            formik.touched.title && formik.errors.title
-              ? formik.errors.title
+            formik.touched.comment && formik.errors.comment
+              ? formik.errors.comment
               : ""
           }
           FormHelperTextProps={{
@@ -107,36 +105,30 @@ const NewPost = props => {
           }}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.title}
+          value={formik.values.comment}
         />
         <TextField
           variant="outlined"
           margin="normal"
-          required
           fullWidth
           multiline
-          name="description"
-          label="Description"
-          type="text"
-          id="description"
-          rows="10"
-          error={
-            formik.touched.description &&
-            formik.errors.description !== undefined
-          }
-          helperText={
-            formik.touched.description && formik.errors.description
-              ? formik.errors.description
-              : ""
-          }
-          FormHelperTextProps={{
-            classes: {
-              root: classes.helperText
-            }
-          }}
+          name="code"
+          label="Code"
+          type="code"
+          id="code"
+          rows="5"
+          // error={formik.touched.code && formik.errors.code !== undefined}
+          // helperText={
+          //   formik.touched.text && formik.errors.text ? formik.errors.text : ""
+          // }
+          // FormHelperTextProps={{
+          //   classes: {
+          //     root: classes.helperText
+          //   }
+          // }}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          value={formik.values.description}
+          value={formik.values.text}
         />
 
         {error && (
@@ -158,4 +150,4 @@ const NewPost = props => {
   );
 };
 
-export default NewPost;
+export default NewComment;

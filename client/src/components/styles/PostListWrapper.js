@@ -1,8 +1,16 @@
 import styled from "styled-components";
 
-const IssueListWrapper = styled.div`
+const PostListWrapper = styled.div`
   display: grid;
   grid-template-columns: 30vw auto;
+  .serach-container {
+    padding: 0rem 1rem 4rem;
+
+    .search-bar {
+      width: 50vmax;
+    }
+  }
+
   .list-info {
     padding: 0 1rem;
     color: #888;
@@ -11,21 +19,24 @@ const IssueListWrapper = styled.div`
   .list-container {
     margin-bottom: 3rem;
   }
-  .issue-container {
+  .post-container {
     padding: 1rem;
     border: 1px solid var(--darkGrey);
     border-radius: 20px;
   }
-  .issue-list {
+  .posts-list {
     margin: 0;
     padding: 1rem;
   }
+
   .list-item {
+    background: var(--offWhite);
     list-style: none;
     box-shadow: var(--lightShadow);
     border-radius: 20px;
     margin-bottom: 1rem;
   }
+
   .list-item:hover {
     box-shadow: var(--darkShadow);
     border-radius: 20px;
@@ -35,6 +46,7 @@ const IssueListWrapper = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
+    text-transform: capitalize;
   }
   .pagination {
     text-align: center;
@@ -53,6 +65,11 @@ const IssueListWrapper = styled.div`
       font-weight: 600;
     }
   }
+  .message-container {
+    padding: 0 1rem;
+    text-align: center;
+    color: red;
+  }
 `;
 
-export default IssueListWrapper;
+export default PostListWrapper;

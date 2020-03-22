@@ -13,7 +13,7 @@ const Header = () => {
           <div className="header-container">
             <div className="logo-container">
               <Link to="/" className="logo-link">
-                <h1>Issue Tracker 2.0</h1>
+                <h1>{`< fulstak />`}</h1>
               </Link>
             </div>
             <div className="primary-nav">

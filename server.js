@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const authRoute = require("./routes/auth");
 const adminRoute = require("./routes/admin");
+const publicRoute = require("./routes/public");
 const { URL, PORT } = require("./utils/constants");
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,8 +25,12 @@ app.use((req, res, next) => {
 
   next();
 });
+app.use("/", publicRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
+app.get("*", (req, res) => {
+  res.status(404).send("Sorry, that web page doesn't exist 🤷🏻‍");
+});
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;

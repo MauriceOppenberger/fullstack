@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import AuthContext from "./context/auth";
 import Loading from "./components/Loading";
-import Header from "./components/Header";
 import "./App.css";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import Dashboard from "./views/admin/Dashboard";
-import Public from "./views/public/Public";
+import Dashboard from "./components/admin/Dashboard";
+import Index from "./components/public/Index";
 import { auth, logout } from "./utils/api";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Layout from "./components/Layout";
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,9 +66,10 @@ function App() {
       <CssBaseline />
       <AuthContext.Provider value={{ handleLogout, user }}>
         <Router>
-          <Header />
-          <Public handleLogin={handleLogin} />
-          <ProtectedRoute path="/dashboard" component={Dashboard} />
+          <Layout user={user}>
+            <Index handleLogin={handleLogin} />
+            <ProtectedRoute path="/dashboard" component={Dashboard} />
+          </Layout>
         </Router>
       </AuthContext.Provider>
     </div>

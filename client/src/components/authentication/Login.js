@@ -90,10 +90,15 @@ const Login = props => {
         .then(res => {
           console.log(res.user);
           props.auth(res.user);
-          props.history.push({
-            pathname: "/dashboard/",
-            state: { user: res.message }
-          });
+          props.location.state
+            ? props.history.push({
+                pathname: props.location.state.from.pathname,
+                state: { user: res.message }
+              })
+            : props.history.push({
+                pathname: "/dashboard/",
+                state: { user: res.message }
+              });
         })
         .catch(err => {
           setError(err.message);

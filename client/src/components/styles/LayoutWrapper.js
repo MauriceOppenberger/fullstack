@@ -15,9 +15,19 @@ const LayoutWrapper = styled.main`
   .btn {
     width: 150px;
     min-width: max-content;
-    background: #ececec;
-    margin: 0 auto;
+    background: none;
+    margin: 0 0.5rem 0 0;
     /* font-size: 1rem; */
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit:hover {
+    background: orange;
+    color: var(--mainWhite);
+  }
+  .btn-delete:hover {
+    background: red;
+    color: var(--mainWhite);
   }
 
   .active button {
