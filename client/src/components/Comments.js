@@ -23,6 +23,8 @@ const fetchReducer = (state, action) => {
         comments: [],
         error: action.message
       };
+    default:
+      return state;
   }
 };
 const Comments = props => {

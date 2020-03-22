@@ -53,7 +53,7 @@ const Posts = props => {
     }, 500);
 
     return () => clearTimeout(id);
-  }, [props.history.location.state]);
+  }, []);
 
   const handleClick = id => {
     // props.history.push(`/dashboard/open-issues/${id}`);

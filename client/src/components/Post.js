@@ -59,7 +59,7 @@ const Post = props => {
       fetchPost(props.match.params.id);
     }, 500);
     return () => clearTimeout(id);
-  }, []);
+  }, [props.match.params.id]);
 
   const handleDelete = async id => {
     try {
