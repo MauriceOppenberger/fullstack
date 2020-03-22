@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -25,12 +26,23 @@ app.use((req, res, next) => {
 
   next();
 });
+
 app.use("/", publicRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
-app.get("*", (req, res) => {
-  res.status(404).send("Sorry, that web page doesn't exist 🤷🏻‍");
-});
+
+if (process.env.Node_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get("*", function(req, res) {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+// for ALL routes that don't match, serve our react bundle.
+// app.use(express.static(path.join(__dirname, "build")));
+// app.get("*", function(req, res) {
+//   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+// });
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;
