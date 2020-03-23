@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const SECRET = require("./constants");
+const { SECRET } = require("./constants");
 
 exports.createToken = data => {
   const token = jwt.sign(data, SECRET, {

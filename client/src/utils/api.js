@@ -1,5 +1,7 @@
+// maintain fetch calls in one location
+
 // check for authentication
-exports.auth = () => {
+export const auth = () => {
   return fetch("/auth", {
     method: "POST",
     credentials: "include",
@@ -9,7 +11,7 @@ exports.auth = () => {
   });
 };
 //Log user in
-exports.login = (email, password) => {
+export const login = (email, password) => {
   return fetch("/auth/login", {
     method: "POST",
     credentials: "include",
@@ -23,7 +25,7 @@ exports.login = (email, password) => {
   });
 };
 // Log user out
-exports.logout = () => {
+export const logout = () => {
   return fetch("/auth/logout", {
     method: "POST",
     credentials: "include",
@@ -33,7 +35,7 @@ exports.logout = () => {
   });
 };
 // Sign user up
-exports.signup = (firstName, lastName, email, password) => {
+export const signup = (firstName, lastName, email, password) => {
   return fetch("/auth/signup", {
     method: "POST",
     headers: {
@@ -49,7 +51,7 @@ exports.signup = (firstName, lastName, email, password) => {
 };
 
 // Create new Post
-exports.addPost = (values, userId) => {
+export const addPost = (values, userId) => {
   return fetch("/admin/add-post", {
     method: "POST",
     credentials: "include",
@@ -65,8 +67,10 @@ exports.addPost = (values, userId) => {
   });
 };
 
+//partially refactored to async/await function
+
 // Update Post
-exports.updatePost = async (id, values, userId) => {
+export const updatePost = async (id, values, userId) => {
   try {
     const res = await fetch(`/admin/edit-post/${id}`, {
       method: "PUT",
@@ -91,7 +95,7 @@ exports.updatePost = async (id, values, userId) => {
   }
 };
 // Get all posts by user
-exports.getPosts = async () => {
+export const getPostsByUser = async () => {
   try {
     const res = await fetch("/admin/posts", {
       method: "GET",
@@ -113,7 +117,7 @@ exports.getPosts = async () => {
 };
 
 // Get One post by id
-exports.getPost = async id => {
+export const getPost = async id => {
   try {
     const res = await fetch(`/posts/${id}`, {
       method: "GET",
@@ -130,7 +134,7 @@ exports.getPost = async id => {
 };
 
 // Get all public posts
-exports.getPublicPosts = async () => {
+export const getAllPosts = async () => {
   try {
     const res = await fetch("/posts", {
       method: "GET",
@@ -153,7 +157,7 @@ exports.getPublicPosts = async () => {
 };
 
 //Delete post by id
-exports.deletePost = async id => {
+export const deletePost = async id => {
   try {
     const res = await fetch(`/admin/posts/${id}`, {
       method: "DELETE",
@@ -172,8 +176,9 @@ exports.deletePost = async id => {
     console.log(err);
   }
 };
+
 //Post Comment
-exports.addComment = async (values, postId) => {
+export const addComment = async (values, postId) => {
   try {
     const res = await fetch(`/admin/posts/${postId}/comment`, {
       method: "POST",
@@ -186,10 +191,10 @@ exports.addComment = async (values, postId) => {
         code: values.code
       })
     });
-    // if (res.status !== 200 && res.status !== 201) {
-    //   const error = new Error("Could not post comment");
-    //   throw error;
-    // }
+    if (res.status !== 200 && res.status !== 201) {
+      const error = new Error("Could not Delete post");
+      throw error;
+    }
     return res;
   } catch (err) {
     console.log(err);

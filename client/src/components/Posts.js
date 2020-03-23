@@ -2,7 +2,7 @@ import React, { useEffect, useState, useReducer } from "react";
 // import Post from "./Post";
 import Loading from "./Loading";
 import PostListWrapper from "./styles/PostListWrapper";
-import { getPosts, getPublicPosts } from "../utils/api";
+import { getPostsByUser, getAllPosts } from "../utils/api";
 import PostPreview from "./PostPreview";
 import timeConverter from "../utils/timeConverter";
 
@@ -31,7 +31,9 @@ const Posts = props => {
 
   const fetchPosts = async () => {
     try {
-      const { data } = props.user ? await getPosts() : await getPublicPosts();
+      const { data } = props.user
+        ? await getPostsByUser()
+        : await getAllPosts();
 
       if (!data) {
         const error = new Error("No posts found");
@@ -40,23 +42,22 @@ const Posts = props => {
 
       dispatch({ type: "success", data: data });
     } catch (err) {
-      console.log(err);
       dispatch({ type: "failed", message: err });
     }
   };
 
   useEffect(() => {
-    console.log("effect");
     dispatch({ type: "fetching" });
+    //Set Timeout for user experience
     const id = setTimeout(() => {
       fetchPosts();
     }, 500);
 
     return () => clearTimeout(id);
+    //Warning - Missing dependency array????
   }, []);
 
   const handleClick = id => {
-    // props.history.push(`/dashboard/open-issues/${id}`);
     const index = state.posts.findIndex(post => post._id === id);
     updateShow({ show: true, id: index });
   };
@@ -64,7 +65,6 @@ const Posts = props => {
     updateShow({ show: false, id: null });
   };
 
-  console.log(state);
   if (state.loading) {
     return (
       <PostListWrapper>
@@ -106,7 +106,6 @@ const Posts = props => {
 
                   <div className="meta-info">
                     <p>Published: {timeConverter(post.createdAt)}</p>
-
                     <p>
                       Creator: {post.creator.firstName} {post.creator.lastName}
                     </p>

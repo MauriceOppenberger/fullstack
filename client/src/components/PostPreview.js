@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect } from "react";
 import SinglePostWrapper from "./styles/SinglePostWrapper";
 import Button from "@material-ui/core/Button";
 import { deletePost } from "../utils/api";

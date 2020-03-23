@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
@@ -73,8 +73,6 @@ const NewComment = props => {
     }
   });
 
-  useEffect(() => {}, []);
-
   return (
     <div className={classes.paper}>
       <Typography component="h1" variant="h5">
@@ -117,15 +115,6 @@ const NewComment = props => {
           type="code"
           id="code"
           rows="5"
-          // error={formik.touched.code && formik.errors.code !== undefined}
-          // helperText={
-          //   formik.touched.text && formik.errors.text ? formik.errors.text : ""
-          // }
-          // FormHelperTextProps={{
-          //   classes: {
-          //     root: classes.helperText
-          //   }
-          // }}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.text}
