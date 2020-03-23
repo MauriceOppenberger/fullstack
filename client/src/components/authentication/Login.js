@@ -88,7 +88,6 @@ const Login = props => {
           return result.json();
         })
         .then(res => {
-          console.log(res.user);
           props.auth(res.user);
           props.location.state
             ? props.history.push({
@@ -112,7 +111,7 @@ const Login = props => {
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
         <Link className={classes.link} color="inherit" to="/">
-          Your Website
+          {`< fulstak />`}
         </Link>{" "}
         {new Date().getFullYear()}
         {"."}

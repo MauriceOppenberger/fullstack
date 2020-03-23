@@ -56,6 +56,9 @@ const useStyles = makeStyles(theme => ({
 const NewPost = props => {
   const classes = useStyles();
   const [error, setError] = useState();
+  // keeping local state of form values in order
+  // to prepopulate values with exsiting values from database
+  // when editing posts
   const [postValues, updatePostValues] = useState({
     title: "",
     description: "",

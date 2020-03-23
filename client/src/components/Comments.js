@@ -49,8 +49,6 @@ const Comments = props => {
           return data;
         })
       );
-      // const result = await res.json();
-      console.log(res);
       dispatch({ type: "success", data: res });
     } catch (err) {
       console.log(err);
@@ -65,7 +63,6 @@ const Comments = props => {
     return () => clearTimeout(id);
   }, [props.comments]);
 
-  console.log(state);
   if (state.loading) {
     return <Loading />;
   }

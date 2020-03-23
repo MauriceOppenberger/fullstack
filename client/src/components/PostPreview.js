@@ -7,8 +7,6 @@ import Highlight from "react-highlight.js";
 import highlightStyles from "highlight.js/styles/railscasts.css";
 
 const PostPreview = props => {
-  useEffect(() => {}, []);
-
   const handleDelete = async id => {
     try {
       const res = await deletePost(id);
@@ -17,7 +15,9 @@ const PostPreview = props => {
         const error = new Error("Failed to delete post");
         throw error;
       }
+      // close post preview on posts component
       props.handleDelete();
+      // Redirect to /open-posts
       props.history.push({
         pathname: "/dashboard/open-posts",
         state: { message: "Post Deleted!" }
@@ -28,7 +28,6 @@ const PostPreview = props => {
   };
 
   const { post } = props;
-
   return (
     <AuthContext.Consumer>
       {context => {

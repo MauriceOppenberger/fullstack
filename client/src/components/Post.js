@@ -36,6 +36,8 @@ const Post = props => {
     post: null
   });
   const [addComment, updateAddComment] = useState(false);
+
+  // handle local state for newly added comments
   const [newComment, updateNewComment] = useState([]);
 
   const fetchPost = async id => {
@@ -69,6 +71,7 @@ const Post = props => {
         const error = new Error("Failed to delete post");
         throw error;
       }
+      // Redirect to /open-posts when post deleted
       props.history.push({
         pathname: "/dashboard/open-posts",
         state: { message: "Post Deleted!" }
@@ -80,7 +83,7 @@ const Post = props => {
   const handleNewComment = data => {
     updateAddComment(false);
     //update UI based on local state
-    //avaid making new fetch request for newly added comments
+    //avoid making new fetch request for newly added comments
     updateNewComment(prev => {
       return [...prev, data];
     });
@@ -128,6 +131,7 @@ const Post = props => {
               <div className="comments-container">
                 <Comments comments={post.comments} />
 
+                {/* adding list of newly created comments from localstate */}
                 {newComment.length > 0 && (
                   <CommentListWrapper>
                     <ul className="list">

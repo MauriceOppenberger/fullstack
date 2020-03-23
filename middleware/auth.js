@@ -1,6 +1,7 @@
 const { verifyToken } = require("../utils/token");
 const User = require("../models/user");
 
+//Check if token exists and if still valid to verify user
 const isAuthorized = async (req, res, next) => {
   const auth_token = req.cookies["jwt_token"];
 
@@ -11,6 +12,8 @@ const isAuthorized = async (req, res, next) => {
 
   try {
     const user = await verifyToken(auth_token);
+
+    // Check if user exists
     const index = await User.findById(user.id);
     if (!index || index === -1) {
       const error = new Error("no user found");

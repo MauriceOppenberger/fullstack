@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useReducer } from "react";
-// import Post from "./Post";
 import Loading from "./Loading";
 import PostListWrapper from "./styles/PostListWrapper";
 import { getPostsByUser, getAllPosts } from "../utils/api";
@@ -31,6 +30,8 @@ const Posts = props => {
 
   const fetchPosts = async () => {
     try {
+      // if props.user not undefined, component is rendered from dashboard
+      // get all posts for logged in user
       const { data } = props.user
         ? await getPostsByUser()
         : await getAllPosts();
@@ -57,10 +58,12 @@ const Posts = props => {
     //Warning - Missing dependency array????
   }, []);
 
+  // open post preview on click
   const handleClick = id => {
     const index = state.posts.findIndex(post => post._id === id);
     updateShow({ show: true, id: index });
   };
+  // close post preview when post is deleted
   const handleDelete = () => {
     updateShow({ show: false, id: null });
   };
@@ -123,6 +126,7 @@ const Posts = props => {
           handleDelete={handleDelete}
         />
       )}
+      {/* inform user that post is deleted  */}
       {!show.show && props.history.location.state && (
         <div className="message-container">
           <h2>{props.history.location.state.message}</h2>

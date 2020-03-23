@@ -34,6 +34,8 @@ const Sidebar = () => {
       </nav>
     );
   };
+
+  // Public sidebar currently not used!!!
   const publicSidebar = () => {
     return (
       <nav className="sidebar-nav">

@@ -4,6 +4,9 @@ import Sidebar from "./Sidebar";
 import Header from "./Header";
 
 const Layout = ({ user, children }) => {
+  // use layout styles based on authentication of user
+  // avoid sperate layout components for public and admin view
+
   return (
     <LayoutWrapper>
       <Header />

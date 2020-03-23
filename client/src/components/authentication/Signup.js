@@ -104,7 +104,7 @@ const Signup = props => {
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
         <Link className={classes.link} to="/">
-          Your Website
+          {`< fulstak />`}
         </Link>{" "}
         {new Date().getFullYear()}
         {"."}

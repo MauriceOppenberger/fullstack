@@ -3,6 +3,7 @@ const User = require("../models/user");
 const Comment = require("../models/comment");
 const { validationResult } = require("express-validator");
 
+//Find all Post for spesific user by userId
 exports.getPostsByUser = async (req, res, next) => {
   try {
     const posts = await Post.find({ creator: req.user.id })
@@ -14,6 +15,7 @@ exports.getPostsByUser = async (req, res, next) => {
   }
 };
 
+// Create New Post
 exports.createPost = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -33,22 +35,25 @@ exports.createPost = async (req, res, next) => {
     });
     const newPost = await post.save();
 
+    //Check if user exists
     const user = await User.findById(userId);
     if (!user) {
       const error = new Error("no user found");
       error.statusCode = 400;
       throw error;
     }
+    //Add new post to user model in order
+    //to keep track of posts by user
     user.posts.push(newPost);
     await user.save();
     res.status(201).json({ message: "Post created", post: newPost });
   } catch (err) {
-    // res.status(500).json({ message: "internal server error" });
     console.log(err);
     next(err);
   }
 };
 
+// Edit Post
 exports.editPost = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -58,6 +63,8 @@ exports.editPost = async (req, res, next) => {
       error.data = errors.array();
       throw error;
     }
+
+    //Find the post by userId and postId
     const post = await Post.findOne({
       creator: req.user.id,
       _id: req.params.id
@@ -70,6 +77,7 @@ exports.editPost = async (req, res, next) => {
       userId
     } = req.body;
 
+    // Update post with new content
     post.title = updatedTitle;
     post.description = updatedDescription;
     post.language = updatedLanguage;
@@ -78,12 +86,12 @@ exports.editPost = async (req, res, next) => {
 
     res.status(200).json({ message: "Post updated", post: updatedPost });
   } catch (err) {
-    // res.status(500).json({ message: "internal server error" });
     console.log(err);
     next(err);
   }
 };
 
+//Remove Post by id
 exports.removePostById = async (req, res, next) => {
   const postId = req.params.id;
   try {
@@ -94,6 +102,7 @@ exports.removePostById = async (req, res, next) => {
       throw error;
     }
     await Post.findByIdAndDelete(postId);
+    //Find user and remove post id from users posts array collection
     const user = await User.findById(req.user.id);
     user.posts.pull(postId);
     await user.save();
@@ -104,6 +113,7 @@ exports.removePostById = async (req, res, next) => {
   }
 };
 
+// Create new Comment
 exports.createComment = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -120,14 +130,15 @@ exports.createComment = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
-    // Is getting the postId and UserId safer than
-    // getting them from the req.body?
+    // Is getting the postId and UserId from req safer than
+    // getting them from the req.body ???
     const comment = new Comment({
       comment: req.body.comment,
       code: req.body.code,
       post: req.params.id,
       creator: req.user.id
     });
+    // Update post comment array with newly created comment
     const newComment = await comment.save();
     post.comments.push(newComment);
     await post.save();

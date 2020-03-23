@@ -1,4 +1,4 @@
-// maintain fetch calls in one location
+// Maintain fetch calls in one location
 
 // check for authentication
 export const auth = () => {
@@ -67,7 +67,7 @@ export const addPost = (values, userId) => {
   });
 };
 
-//partially refactored to async/await function
+//application partially refactored to async/await function
 
 // Update Post
 export const updatePost = async (id, values, userId) => {

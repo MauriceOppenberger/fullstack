@@ -14,11 +14,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Check if user is already authenticated on inital application load
   useEffect(() => {
     // Set timeout for User experience
     const id = setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 1000);
     auth()
       .then(res => {
         if (res.status !== 200) {
@@ -34,9 +35,13 @@ function App() {
     return () => clearTimeout(id);
   }, []);
 
+  // Log user in and Get user information from Login component
   const handleLogin = user => {
+    //   update application state with user information
     setUser(user);
   };
+
+  // Log user out from Logout component
   const handleLogout = () => {
     logout()
       .then(res => {
@@ -46,7 +51,8 @@ function App() {
         }
         return res.json();
       })
-      .then(result => {
+      .then(() => {
+        // update application state
         setUser(null);
       })
       .catch(err => console.log(err));

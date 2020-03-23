@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const JTW_SECRECT = process.env.SECRET;
 
+// Create JSON WEB TOKEN
 exports.createToken = data => {
   const token = jwt.sign(data, JTW_SECRECT, {
     expiresIn: "1h"

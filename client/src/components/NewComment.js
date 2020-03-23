@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "start"
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(2)
   },
   submit: {
@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
 const NewComment = props => {
   const classes = useStyles();
   const [error, setError] = useState();
+  // keeping local state of comment values in order
+  // to prepopulate values with exsiting values from database
+  // when editing comments
   const [commentValues, updateCommentValues] = useState({
     comment: "",
     code: ""
@@ -48,6 +51,7 @@ const NewComment = props => {
 
   const formik = useFormik({
     initialValues: commentValues,
+    // important for prepoulation of values in editing mode
     enableReinitialize: true,
     validationSchema: Yup.object({
       comment: Yup.string().required("Required"),
@@ -65,6 +69,7 @@ const NewComment = props => {
           throw error;
         }
         const newComment = await result.json();
+        // handle ui update with new comments in parent component (POST)
         props.handleNewComment(newComment);
       } catch (err) {
         setError(err.message);

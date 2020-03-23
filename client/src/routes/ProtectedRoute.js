@@ -9,6 +9,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         <Route
           {...rest}
           render={props => {
+            // Check if user is authorized for requested route
+            // Redirect user to login page if not authorized
             if (context.user) {
               return <Component {...props} />;
             } else {

@@ -1,10 +1,11 @@
 const Post = require("../models/post");
 const Comment = require("../models/comment");
 
+// Get all post
 exports.getPosts = async (req, res, next) => {
   try {
     const posts = await Post.find()
-
+      //Populate creator with public information only
       .populate({ path: "creator", select: "firstName lastName" })
       .sort({ createdAt: -1 });
     if (!posts) {
@@ -23,6 +24,7 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
+// Get Post by postId
 exports.getPostById = async (req, res, next) => {
   const postId = req.params.id;
   try {
@@ -43,6 +45,7 @@ exports.getPostById = async (req, res, next) => {
   }
 };
 
+// Get Comment by commentId
 exports.getCommentById = async (req, res, next) => {
   const commentId = req.params.id;
   try {

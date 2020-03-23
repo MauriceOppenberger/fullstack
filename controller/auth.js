@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const { createToken } = require("../utils/token");
 
+//Check if user is already authenticated in order to remain logged in
+// when refreshing the page or closing the tap
 exports.isAuthenticated = async (req, res, next) => {
   res.status(200).json({
     user: {
@@ -15,6 +17,7 @@ exports.isAuthenticated = async (req, res, next) => {
   });
 };
 
+// Sign up and create new user
 exports.signup = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -46,8 +49,6 @@ exports.signup = async (req, res, next) => {
     });
     //Add user to database
     const newUser = await user.save();
-
-    console.log("user created");
     res.status(201).json({ message: "user created", newUser });
   } catch (err) {
     console.log(err);
@@ -55,6 +56,7 @@ exports.signup = async (req, res, next) => {
   }
 };
 
+// Login
 exports.login = async (req, res, next) => {
   try {
     //Return for validation errors
@@ -90,6 +92,8 @@ exports.login = async (req, res, next) => {
       email: user.email,
       id: user._id.toString()
     };
+    // Create new jwt token when succesfully logged in
+    // token expires after 1 hour
     const token = createToken(newUser);
 
     //return user if password correct
@@ -104,6 +108,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
+// Logout
 exports.logout = async (req, res, next) => {
   // log user out and clear JWT TOKEN
   res.clearCookie("jwt_token");

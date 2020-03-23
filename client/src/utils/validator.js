@@ -1,3 +1,7 @@
+// Custom validator
+// No longer in use
+// Replace with FROMIK and YUP npm packages
+
 const validator = (field, value) => {
   let valid;
   switch (field) {
