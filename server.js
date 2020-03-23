@@ -9,7 +9,7 @@ const adminRoute = require("./routes/admin");
 const publicRoute = require("./routes/public");
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,6 +19,8 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.get("/", (req, res) => res.send("API Running"));
 
 app.use("/", publicRoute);
 app.use("/auth", authRoute);
