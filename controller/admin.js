@@ -14,27 +14,6 @@ exports.getPostsByUser = async (req, res, next) => {
   }
 };
 
-// exports.getPostById = async (req, res, next) => {
-//   const postId = req.params.id;
-//   try {
-//     const post = await Post.findById(postId).populate("creator");
-//     if (!post) {
-//       const error = new Error("no post found");
-//       error.statusCode = 400;
-//       throw error;
-//     }
-//     if (post.creator._id.toString() !== req.user.id.toString()) {
-//       const error = new Error("no allowed to view this post");
-//       error.statusCode = 403;
-//       throw error;
-//     }
-//     res.status(200).json({ post: post });
-//   } catch (err) {
-//     console.log(err);
-//     next(err);
-//   }
-// };
-
 exports.createPost = async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -98,7 +77,6 @@ exports.editPost = async (req, res, next) => {
     const updatedPost = await post.save();
 
     res.status(200).json({ message: "Post updated", post: updatedPost });
-    console.log(updatedPost);
   } catch (err) {
     // res.status(500).json({ message: "internal server error" });
     console.log(err);
@@ -108,7 +86,6 @@ exports.editPost = async (req, res, next) => {
 
 exports.removePostById = async (req, res, next) => {
   const postId = req.params.id;
-  console.log(postId);
   try {
     const postToDelete = await Post.findById(postId);
     if (!postToDelete) {
@@ -154,7 +131,6 @@ exports.createComment = async (req, res, next) => {
     const newComment = await comment.save();
     post.comments.push(newComment);
     await post.save();
-    console.log(newComment);
     res.status(201).json({ message: "Comment created", data: newComment });
   } catch (err) {
     console.log(err);

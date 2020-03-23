@@ -22,7 +22,6 @@ const isAuthorized = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     return next(err);
-    // res.status(403).json({ message: "No authentication token provided" });
   }
 };
 

@@ -7,21 +7,23 @@ const app = express();
 const authRoute = require("./routes/auth");
 const adminRoute = require("./routes/admin");
 const publicRoute = require("./routes/public");
-const { URL, PORT } = require("./utils/constants");
+const { URL, LOCALHOST } = require("./utils/constants");
+
+const MONGODB_URI = process.env.MONGODB_URI || URL;
+const PORT = process.env.PORT || LOCALHOST;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-  // res.header("Access-Control-Allow-Origin", );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
+  // res.header(
+  //   "Access-Control-Allow-Methods",
+  //   "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+  // );
+  // res.header(
+  //   "Access-Control-Allow-Headers",
+  //   "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  // );
   res.header("Access-Control-Allow-Credentials", true);
 
   next();
@@ -52,9 +54,12 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => {
-    app.listen(PORT, () => {
+    app.listen(process.env.PORT || PORT, () => {
       console.log(`server listening on port ${PORT}`);
     });
   })

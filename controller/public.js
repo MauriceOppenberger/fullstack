@@ -12,7 +12,6 @@ exports.getPosts = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
-    console.log(posts);
 
     res.status(200).json({
       message: "Posts fetched successfully",
@@ -36,11 +35,7 @@ exports.getPostById = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
-    // if (post.creator._id.toString() !== req.user.id.toString()) {
-    //   const error = new Error("no allowed to view this post");
-    //   error.statusCode = 403;
-    //   throw error;
-    // }
+
     res.status(200).json({ post: post });
   } catch (err) {
     console.log(err);
@@ -60,7 +55,7 @@ exports.getCommentById = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
-    console.log(comment);
+
     res.status(200).json({ data: comment });
   } catch (err) {
     console.log(err);
