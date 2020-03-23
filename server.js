@@ -20,8 +20,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => res.send("API Running"));
-
 app.use("/", publicRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
