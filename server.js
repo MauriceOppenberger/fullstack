@@ -7,10 +7,9 @@ const app = express();
 const authRoute = require("./routes/auth");
 const adminRoute = require("./routes/admin");
 const publicRoute = require("./routes/public");
-const { URL, LOCALHOST } = require("./utils/constants");
 
-const MONGODB_URI = process.env.MONGODB_URI || URL;
-const PORT = process.env.PORT || LOCALHOST;
+const MONGODB_URI = process.env.MONGODB_URI;
+const PORT = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -32,11 +31,6 @@ if (process.env.Node_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
-// for ALL routes that don't match, serve our react bundle.
-// app.use(express.static(path.join(__dirname, "build")));
-// app.get("*", function(req, res) {
-//   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-// });
 
 app.use((error, req, res, next) => {
   const status = error.statusCode || 500;

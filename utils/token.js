@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
-const { SECRET } = require("./constants");
 
-const JTW_SECRECT = process.env.SECRET || SECRET;
+const JTW_SECRECT = process.env.SECRET;
 
 exports.createToken = data => {
   const token = jwt.sign(data, JTW_SECRECT, {
