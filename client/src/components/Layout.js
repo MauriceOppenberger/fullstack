@@ -1,14 +1,15 @@
 import React from "react";
-import LayoutWrapper from "./styles/LayoutWrapper";
+import "./Layout.css";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import Footer from "./Footer";
 
 const Layout = ({ user, children }) => {
   // use layout styles based on authentication of user
   // avoid sperate layout components for public and admin view
 
   return (
-    <LayoutWrapper>
+    <main>
       <Header />
 
       <div className={user ? "page-body" : "fullwidth-page-body"}>
@@ -20,7 +21,8 @@ const Layout = ({ user, children }) => {
 
         <div className="main">{children}</div>
       </div>
-    </LayoutWrapper>
+      <Footer />
+    </main>
   );
 };
 export default Layout;

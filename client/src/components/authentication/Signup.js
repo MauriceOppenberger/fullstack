@@ -9,7 +9,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -99,18 +99,6 @@ const Signup = props => {
     }
   });
 
-  function Copyright() {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {"Copyright © "}
-        <Link className={classes.link} to="/">
-          {`< fulstak />`}
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  }
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -264,8 +252,8 @@ const Signup = props => {
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
+          <Grid container justify="flex-end" className="flex-container">
+            <Grid item className="flex-item">
               <Link className={classes.link} to="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
@@ -273,9 +261,6 @@ const Signup = props => {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
 };

@@ -37,7 +37,7 @@ function App() {
 
   // Log user in and Get user information from Login component
   const handleLogin = user => {
-    //   update application state with user information
+    // update application state with user information
     setUser(user);
   };
 

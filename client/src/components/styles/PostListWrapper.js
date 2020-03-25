@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 const PostListWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 30vw auto;
   .serach-container {
     padding: 0rem 1rem 4rem;
 
@@ -15,6 +13,10 @@ const PostListWrapper = styled.div`
     padding: 0 1rem;
     color: #888;
     font-size: 0.9rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 30vmax auto;
   }
   .list-container {
     margin-bottom: 3rem;

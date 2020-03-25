@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import SinglePostWrapper from "./styles/SinglePostWrapper";
 import Button from "@material-ui/core/Button";
 import { deletePost } from "../utils/api";
@@ -33,7 +33,8 @@ const PostPreview = props => {
       {context => {
         return (
           <SinglePostWrapper>
-            <div className="post-container">
+            {/* <div className="main"> */}
+            <div className="post-container preview">
               <h3>{post.title}</h3>
               <div className="description">
                 <Highlight language="javascript" style={highlightStyles}>
@@ -83,6 +84,7 @@ const PostPreview = props => {
                 )}
               </div>
             </div>
+            {/* </div> */}
           </SinglePostWrapper>
         );
       }}

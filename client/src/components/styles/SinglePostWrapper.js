@@ -1,16 +1,17 @@
 import styled from "styled-components";
 
 const SinglePostWrapper = styled.div`
-  padding: 0 2rem;
+  padding: 0 1rem;
 
   .post-container {
-    /* background: var(--offWhite); */
     position: -webkit-sticky;
     position: sticky;
+    max-width: 1100px;
+    margin: auto;
     top: 20px;
-    padding: 2rem !important;
-    /* border-radius: 20px;
-    box-shadow: var(--lightShadow); */
+  }
+  .preview {
+    box-shadow: var(--darkShadow);
   }
   .post-info {
     p {

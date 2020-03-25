@@ -79,59 +79,62 @@ const Posts = props => {
   }
   return (
     <PostListWrapper>
-      <div className="list-container">
-        <div className="list-info">
-          <p>
-            {props.user
-              ? `Hi ${props.user.firstName}, here are all your posts`
-              : `Welcome, check out our latest posts`}
-          </p>
-          <p>
-            {props.user
-              ? `Author: ${props.user.firstName} ${props.user.lastName}`
-              : `Author: All`}
-          </p>
-        </div>
-        <ul className="posts-list">
-          {state.posts.map(post => {
-            return (
-              <li
-                key={post._id}
-                className="list-item"
-                onClick={() => handleClick(post._id)}
-              >
-                <div className="post-container">
-                  <h3>
-                    {post.title.length > 180
-                      ? `${post.title.substring(0, 180)}...`
-                      : post.title}
-                  </h3>
+      <div className="grid">
+        <div className="list-container">
+          <div className="list-info">
+            <p>
+              {props.user
+                ? `Hi ${props.user.firstName}, here are all your posts`
+                : `Welcome, check out our latest posts`}
+            </p>
+            <p>
+              {props.user
+                ? `Author: ${props.user.firstName} ${props.user.lastName}`
+                : `Author: All`}
+            </p>
+          </div>
+          <ul className="posts-list">
+            {state.posts.map(post => {
+              return (
+                <li
+                  key={post._id}
+                  className="list-item"
+                  onClick={() => handleClick(post._id)}
+                >
+                  <div className="post-container">
+                    <h3>
+                      {post.title.length > 180
+                        ? `${post.title.substring(0, 180)}...`
+                        : post.title}
+                    </h3>
 
-                  <div className="meta-info">
-                    <p>Published: {timeConverter(post.createdAt)}</p>
-                    <p>
-                      Creator: {post.creator.firstName} {post.creator.lastName}
-                    </p>
+                    <div className="meta-info">
+                      <p>Published: {timeConverter(post.createdAt)}</p>
+                      <p>
+                        Creator: {post.creator.firstName}{" "}
+                        {post.creator.lastName}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      {show.show && (
-        <PostPreview
-          {...props}
-          post={state.posts[show.id]}
-          handleDelete={handleDelete}
-        />
-      )}
-      {/* inform user that post is deleted  */}
-      {!show.show && props.history.location.state && (
-        <div className="message-container">
-          <h2>{props.history.location.state.message}</h2>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      )}{" "}
+        {show.show && (
+          <PostPreview
+            {...props}
+            post={state.posts[show.id]}
+            handleDelete={handleDelete}
+          />
+        )}
+        {/* inform user that post is deleted  */}
+        {!show.show && props.history.location.state && (
+          <div className="message-container">
+            <h2>{props.history.location.state.message}</h2>
+          </div>
+        )}{" "}
+      </div>
     </PostListWrapper>
   );
 };

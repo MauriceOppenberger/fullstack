@@ -10,16 +10,16 @@ const Header = () => {
     <AuthContext.Consumer>
       {context => (
         <HeaderWrapper>
-          <div className="header-container">
-            <div className="logo-container">
+          <div className="header-container flex-container">
+            <div className="logo-container flex-item">
               <Link to="/" className="logo-link">
                 <h1>{`< fulstak />`}</h1>
               </Link>
             </div>
-            <div className="primary-nav">
+            <div className="primary-nav flex-item">
               {context.user ? (
-                <ul className="primary-nav-list">
-                  <li className="primary-nav-item">
+                <ul className="primary-nav-list flex-container">
+                  <li className="primary-nav-item flex-item">
                     <Link to="/dashboard">
                       {" "}
                       <Button
@@ -46,8 +46,8 @@ const Header = () => {
                   </li>
                 </ul>
               ) : (
-                <ul className="primary-nav-list">
-                  <li className="primary-nav-item">
+                <ul className="primary-nav-list flex-container">
+                  <li className="primary-nav-item flex-item">
                     <Link to="/login">
                       {" "}
                       <Button size="medium" className="" type="submit">
@@ -55,7 +55,7 @@ const Header = () => {
                       </Button>
                     </Link>
                   </li>
-                  <li className="primary-nav-item">
+                  <li className="primary-nav-item flex-item">
                     <Link to="/signup">
                       {" "}
                       <Button
