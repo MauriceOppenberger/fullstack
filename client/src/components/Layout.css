@@ -35,7 +35,7 @@ a {
   padding: 1rem;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 480px) {
   .flex-container {
     margin: auto !important;
     padding: 0 !important;
