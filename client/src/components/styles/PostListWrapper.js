@@ -16,7 +16,7 @@ const PostListWrapper = styled.div`
   }
   .grid {
     display: grid;
-    grid-template-columns: 30vmax auto;
+    grid-template-columns: 27vmax auto;
   }
   .list-container {
     margin-bottom: 3rem;

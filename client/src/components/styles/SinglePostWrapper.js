@@ -2,16 +2,17 @@ import styled from "styled-components";
 
 const SinglePostWrapper = styled.div`
   padding: 0 1rem;
-
+  overflow: hidden;
   .post-container {
+    /* max-width: 980px; */
+    margin: auto;
     position: -webkit-sticky;
     position: sticky;
-    max-width: 1100px;
-    margin: auto;
     top: 20px;
   }
   .preview {
     box-shadow: var(--darkShadow);
+    margin: 0;
   }
   .post-info {
     p {
@@ -22,6 +23,13 @@ const SinglePostWrapper = styled.div`
   }
   .description {
     margin: 2rem 0;
+  }
+
+  @media screen and (max-width: 980px) {
+    grid-row: 1;
+    .preview {
+      margin-bottom: 2rem;
+    }
   }
 `;
 

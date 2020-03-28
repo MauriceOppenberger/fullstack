@@ -4,6 +4,7 @@ const SidebarWrapper = styled.div`
   border-right: 2px solid var(--mainGrey);
   text-align: center;
   min-height: 250px;
+  max-width: max-content;
   .nav-list {
     margin: 0;
     padding: 0;

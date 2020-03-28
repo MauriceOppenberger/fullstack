@@ -4,10 +4,10 @@ a {
 }
 .page-body {
   display: grid;
-  grid-template-columns: auto 85vw;
+  grid-template-columns: max-content auto;
 }
 .main {
-  padding: 0 2rem;
+  padding: 0 1.5rem;
 }
 .btn {
   width: 150px;
@@ -19,12 +19,12 @@ a {
 }
 
 .btn-edit:hover {
-  background: orange;
-  color: var(--mainWhite);
+  background: orange !important;
+  color: var(--mainWhite) !important;
 }
 .btn-delete:hover {
-  background: red;
-  color: var(--mainWhite);
+  background: red !important;
+  color: var(--mainWhite) !important;
 }
 
 .active button {
@@ -47,14 +47,14 @@ a {
     margin: auto !important;
   }
 
-  .main {
-    padding: 0 !important;
-  }
   code {
     font-size: 0.6rem !important;
   }
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 980px) {
+  .main {
+    padding: 0 !important;
+  }
   .grid {
     grid-template-columns: 100% !important;
   }
