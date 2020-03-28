@@ -4,7 +4,7 @@ const SinglePostWrapper = styled.div`
   padding: 0 1rem;
   overflow: hidden;
   .post-container {
-    /* max-width: 980px; */
+    max-width: 980px;
     margin: auto;
     position: -webkit-sticky;
     position: sticky;
