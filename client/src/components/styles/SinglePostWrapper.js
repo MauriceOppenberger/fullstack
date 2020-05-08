@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const SinglePostWrapper = styled.div`
   padding: 0 2rem;
+  overflow: auto;
 
   .post-container {
     /* background: var(--offWhite); */
@@ -9,8 +10,10 @@ const SinglePostWrapper = styled.div`
     position: sticky;
     top: 20px;
     padding: 2rem !important;
-    /* border-radius: 20px;
-    box-shadow: var(--lightShadow); */
+    /* border-radius: 20px; */
+    border: none;
+    /* box-shadow: var(--lightShadow); */
+    width: 100%;
   }
   .post-info {
     p {
@@ -21,6 +24,7 @@ const SinglePostWrapper = styled.div`
   }
   .description {
     margin: 2rem 0;
+    /* max-width: 780px; */
   }
 `;
 

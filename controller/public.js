@@ -12,11 +12,10 @@ exports.getPosts = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
-    console.log(posts);
 
     res.status(200).json({
       message: "Posts fetched successfully",
-      data: posts
+      data: posts,
     });
   } catch (err) {
     console.log(err);
@@ -29,7 +28,7 @@ exports.getPostById = async (req, res, next) => {
   try {
     const post = await Post.findById(postId).populate({
       path: "creator",
-      select: "firstName lastName"
+      select: "firstName lastName",
     });
     if (!post) {
       const error = new Error("no post found");
@@ -53,14 +52,13 @@ exports.getCommentById = async (req, res, next) => {
   try {
     const comment = await Comment.findById(commentId).populate({
       path: "creator",
-      select: "firstName lastName"
+      select: "firstName lastName",
     });
     if (!comment) {
       const error = new Error("No Comment found");
       error.statusCode = 400;
       throw error;
     }
-    console.log(comment);
     res.status(200).json({ data: comment });
   } catch (err) {
     console.log(err);

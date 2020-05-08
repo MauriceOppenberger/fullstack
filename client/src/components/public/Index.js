@@ -11,15 +11,19 @@ import Posts from "../Posts";
 const Index = ({ handleLogin }) => {
   return (
     <AuthContext.Consumer>
-      {context => (
+      {(context) => (
         <Switch>
-          <Route exact path="/" render={props => <Posts {...props} />} />
-          <Route exact path="/post/:id" render={props => <Post {...props} />} />
+          <Route exact path="/" render={(props) => <Posts {...props} />} />
+          <Route
+            exact
+            path="/post/:id"
+            render={(props) => <Post {...props} />}
+          />
           <Route
             path="/signup"
-            render={props => {
+            render={(props) => {
               return context.user ? (
-                <Redirect to="/dashboard" />
+                <Redirect to="/dashboard/profile" />
               ) : (
                 <Signup {...props} />
               );
@@ -27,9 +31,9 @@ const Index = ({ handleLogin }) => {
           />
           <Route
             path="/login"
-            render={props => {
+            render={(props) => {
               return context.user ? (
-                <Redirect to="/dashboard" />
+                <Redirect to="/dashboard/profile" />
               ) : (
                 <Login {...props} auth={handleLogin} />
               );

@@ -19,39 +19,39 @@ function App() {
       setLoading(false);
     }, 1500);
     auth()
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200) {
           const error = new Error("Not Authorized");
           throw error;
         }
         return res.json();
       })
-      .then(result => {
+      .then((result) => {
         console.log(result);
 
         setUser(result.user);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
     return () => clearTimeout(id);
   }, []);
 
-  const handleLogin = user => {
+  const handleLogin = (user) => {
     setUser(user);
   };
   const handleLogout = () => {
     logout()
-      .then(res => {
+      .then((res) => {
         if (res.status !== 200) {
           const error = new Error("Logout failed ");
           throw error;
         }
         return res.json();
       })
-      .then(result => {
+      .then((result) => {
         console.log(result);
         setUser(null);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
   console.log(user);
   if (loading) {

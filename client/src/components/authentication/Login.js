@@ -17,43 +17,43 @@ import Container from "@material-ui/core/Container";
 
 import { login } from "../../utils/api";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
 
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
   },
 
   helperText: {
     margin: 0,
-    padding: "3px 14px 0px"
+    padding: "3px 14px 0px",
   },
 
   link: {
     textDecoration: "none",
-    color: "#1976d2"
+    color: "#1976d2",
   },
   error: {
     color: "red",
     textAlign: "center",
-    fontSize: "1rem"
-  }
+    fontSize: "1rem",
+  },
 }));
 
-const Login = props => {
+const Login = (props) => {
   const classes = useStyles();
 
   const [error, setError] = useState(null);
@@ -61,20 +61,18 @@ const Login = props => {
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: ""
+      password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Invalid email address")
-        .required("Required"),
+      email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string()
         .required("Required")
-        .matches(/^(?=.*\d)(?=.*[a-z])\w{5,}$/, "Invalid password")
+        .matches(/^(?=.*\d)(?=.*[a-z])\w{5,}$/, "Invalid password"),
     }),
 
-    onSubmit: values => {
+    onSubmit: (values) => {
       login(values.email, values.password)
-        .then(result => {
+        .then((result) => {
           if (result.status === 401 || result.status === 403) {
             const error = new Error("Email or Password invalid");
             setError(error.message);
@@ -87,24 +85,24 @@ const Login = props => {
           }
           return result.json();
         })
-        .then(res => {
+        .then((res) => {
           console.log(res.user);
           props.auth(res.user);
           props.location.state
             ? props.history.push({
                 pathname: props.location.state.from.pathname,
-                state: { user: res.message }
+                state: { user: res.message },
               })
             : props.history.push({
-                pathname: "/dashboard/",
-                state: { user: res.message }
+                pathname: "/dashboard/profile",
+                state: { user: res.message },
               });
         })
-        .catch(err => {
+        .catch((err) => {
           setError(err.message);
           console.log(err);
         });
-    }
+    },
   });
 
   const Copyright = () => {
@@ -156,8 +154,8 @@ const Login = props => {
             }
             FormHelperTextProps={{
               classes: {
-                root: classes.helperText
-              }
+                root: classes.helperText,
+              },
             }}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -182,8 +180,8 @@ const Login = props => {
             }
             FormHelperTextProps={{
               classes: {
-                root: classes.helperText
-              }
+                root: classes.helperText,
+              },
             }}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

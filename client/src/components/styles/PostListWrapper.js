@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const PostListWrapper = styled.div`
   display: grid;
-  grid-template-columns: 30vw auto;
+  grid-template-columns: 25vw auto;
   .serach-container {
     padding: 0rem 1rem 4rem;
 
@@ -10,7 +10,6 @@ const PostListWrapper = styled.div`
       width: 50vmax;
     }
   }
-
   .list-info {
     padding: 0 1rem;
     color: #888;
@@ -35,6 +34,7 @@ const PostListWrapper = styled.div`
     box-shadow: var(--lightShadow);
     border-radius: 20px;
     margin-bottom: 1rem;
+    max-width: 23vw;
   }
 
   .list-item:hover {

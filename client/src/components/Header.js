@@ -8,7 +8,7 @@ const Header = () => {
   console.log("header");
   return (
     <AuthContext.Consumer>
-      {context => (
+      {(context) => (
         <HeaderWrapper>
           <div className="header-container">
             <div className="logo-container">
@@ -20,7 +20,7 @@ const Header = () => {
               {context.user ? (
                 <ul className="primary-nav-list">
                   <li className="primary-nav-item">
-                    <Link to="/dashboard">
+                    <Link to="/dashboard/profile">
                       {" "}
                       <Button
                         size="medium"
