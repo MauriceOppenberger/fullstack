@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -9,10 +10,11 @@ const publicRoute = require("./routes/public");
 const { URL, PORT } = require("./utils/constants");
 
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use((req, res, next) => {
-  // res.header("Access-Control-Allow-Origin", );
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header(
     "Access-Control-Allow-Methods",
     "GET,HEAD,OPTIONS,POST,PUT,DELETE"
@@ -25,6 +27,7 @@ app.use((req, res, next) => {
 
   next();
 });
+app.use("/uploads/files", express.static(path.join("uploads", "files")));
 app.use("/", publicRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);
@@ -46,4 +49,4 @@ mongoose
       console.log(`server listening on port ${PORT}`);
     });
   })
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));

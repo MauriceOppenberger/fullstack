@@ -6,10 +6,10 @@ import AuthContext from "../context/auth";
 import Highlight from "react-highlight.js";
 import highlightStyles from "highlight.js/styles/railscasts.css";
 
-const PostPreview = props => {
+const PostPreview = (props) => {
   useEffect(() => {}, []);
 
-  const handleDelete = async id => {
+  const handleDelete = async (id) => {
     try {
       const res = await deletePost(id);
 
@@ -20,7 +20,7 @@ const PostPreview = props => {
       props.handleDelete();
       props.history.push({
         pathname: "/dashboard/open-posts",
-        state: { message: "Post Deleted!" }
+        state: { message: "Post Deleted!" },
       });
     } catch (err) {
       console.log(err);
@@ -31,11 +31,11 @@ const PostPreview = props => {
 
   return (
     <AuthContext.Consumer>
-      {context => {
+      {(context) => {
         return (
           <SinglePostWrapper>
             <div className="post-container">
-              <h3>{post.title}</h3>
+              <h1>{post.title}</h1>
               <div className="description">
                 <Highlight language="javascript" style={highlightStyles}>
                   {post.description.length > 500

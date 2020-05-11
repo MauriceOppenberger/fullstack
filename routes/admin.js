@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require("../controller/admin");
 const isAuthorized = require("../middleware/auth");
 const { body } = require("express-validator");
+const fileUpload = require("../middleware/file-upload");
 
 // Get all Posts by user id;
 router.get("/posts", isAuthorized, adminController.getPostsByUser);
@@ -23,7 +24,7 @@ router.post(
       .notEmpty(),
     body("userId", "userId is required, field can not be empty")
       .trim()
-      .notEmpty()
+      .notEmpty(),
   ],
   adminController.createPost
 );
@@ -50,7 +51,7 @@ router.put(
       .notEmpty(),
     body("userId", "userId is required, field can not be empty")
       .trim()
-      .notEmpty()
+      .notEmpty(),
   ],
   adminController.editPost
 );
@@ -62,7 +63,7 @@ router.post(
   [
     body("comment", "comment is required, field can not be empty")
       .trim()
-      .notEmpty()
+      .notEmpty(),
   ],
   adminController.createComment
 );
@@ -71,5 +72,16 @@ router.post(
 router.delete("/posts/:id", isAuthorized, adminController.removePostById);
 
 // Update Post
+
+// Get user profile by user id
+router.get("/user/profile", isAuthorized, adminController.getUserProfile);
+
+// Update user profile
+router.post(
+  "/user/profile",
+  isAuthorized,
+  fileUpload.single("file"),
+  adminController.updateUserProfile
+);
 
 module.exports = router;

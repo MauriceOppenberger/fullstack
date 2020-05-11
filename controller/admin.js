@@ -50,7 +50,7 @@ exports.createPost = async (req, res, next) => {
       title,
       description,
       language,
-      creator: userId
+      creator: userId,
     });
     const newPost = await post.save();
 
@@ -81,14 +81,14 @@ exports.editPost = async (req, res, next) => {
     }
     const post = await Post.findOne({
       creator: req.user.id,
-      _id: req.params.id
+      _id: req.params.id,
     });
 
     const {
       updatedTitle,
       updatedDescription,
       updatedLanguage,
-      userId
+      userId,
     } = req.body;
 
     post.title = updatedTitle;
@@ -149,7 +149,7 @@ exports.createComment = async (req, res, next) => {
       comment: req.body.comment,
       code: req.body.code,
       post: req.params.id,
-      creator: req.user.id
+      creator: req.user.id,
     });
     const newComment = await comment.save();
     post.comments.push(newComment);
@@ -160,4 +160,59 @@ exports.createComment = async (req, res, next) => {
     console.log(err);
     next(err);
   }
+};
+exports.getUserProfile = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+
+    const user = await User.findById(id);
+    if (!user) {
+      const error = new Error("no user found");
+      error.statusCode = 400;
+      throw error;
+    }
+    res.status(200).json({ message: "user profile", data: user });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+exports.updateUserProfile = async (req, res, next) => {
+  const { id } = req.user;
+  const {
+    updatedSummery,
+    updatedFirstName,
+    updatedLastName,
+    updatedEmail,
+  } = req.body;
+  const user = await User.findById(id);
+  if (!user) {
+    const error = new Error("no user found");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // update the file related the the user
+
+  let filePath;
+  // update if new file
+  if (req.file) {
+    filePath = req.file.path;
+  }
+  // remain same if file not changes
+  else {
+    filePath = user.resume;
+  }
+  user.summery = updatedSummery;
+  user.firstName = updatedFirstName;
+  user.lastName = updatedLastName;
+  user.email = updatedEmail;
+  // user.password = user.password;
+  user.resume = filePath;
+  // user._id = user.id;
+  // user.posts = user.posts;
+
+  const updatedUser = await user.save();
+
+  console.log(updatedUser);
 };
