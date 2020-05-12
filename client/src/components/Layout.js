@@ -6,16 +6,14 @@ import Header from "./Header";
 const Layout = ({ user, children }) => {
   return (
     <LayoutWrapper>
-      <Header />
+      {/* <Header /> */}
 
       <div className={user ? "page-body" : "fullwidth-page-body"}>
-        {user && (
-          <div className="sidebar">
-            <Sidebar />
-          </div>
-        )}
+        {user && <Sidebar />}
 
-        <div className="main">{children}</div>
+        <div className="main">
+          <div className="container">{children}</div>
+        </div>
       </div>
     </LayoutWrapper>
   );

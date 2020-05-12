@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "start",
-    maxWidth: "50vw",
+    // maxWidth: "50vw",
   },
   welcome: {
     textTransform: "capitalize",

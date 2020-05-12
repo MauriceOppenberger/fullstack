@@ -19,7 +19,7 @@ const Dashboard = () => {
             path="/dashboard/open-posts"
             render={(props) => <Posts {...props} user={context.user} />}
           />
-          <Route path="/dashboard/closed-posts" component={Loading} />
+
           <Route
             path="/dashboard/add-new-post"
             render={(props) => <NewPost {...props} user={context.user} />}

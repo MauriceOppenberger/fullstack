@@ -7,18 +7,23 @@ const LayoutWrapper = styled.main`
   }
   .page-body {
     display: grid;
-    grid-template-columns: auto 85vw;
+    grid-template-columns: 15vmax auto;
   }
   .main {
     padding: 0 2rem;
   }
+  .container {
+    max-width: 70vmax;
+    margin: auto;
+  }
   .btn {
-    width: 150px;
     min-width: max-content;
     background: none;
-    margin: 0 0.5rem 0 0;
+    border-radius: 0;
+    border-bottom: 3px solid transparent;
+    /* margin: 0 0.5rem 0 0; */
     /* font-size: 1rem; */
-    transition: all 0.3s ease;
+    padding: 0;
   }
 
   .btn-edit:hover {
@@ -31,8 +36,7 @@ const LayoutWrapper = styled.main`
   }
 
   .active button {
-    background: var(--mainBlack);
-    color: var(--mainWhite);
+    border-bottom: 3px solid orange;
   }
 `;
 
