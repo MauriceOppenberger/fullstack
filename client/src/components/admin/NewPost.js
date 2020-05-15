@@ -11,55 +11,55 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { addPost, getPost, updatePost } from "../../utils/api";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     display: "flex",
     flexDirection: "column",
     alignItems: "start",
-    maxWidth: "50vw"
+    maxWidth: "50vw",
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    maxWidth: "150px",
-    float: "right"
+    // maxWidth: "150px",
+    // float: "right"
   },
   helperText: {
     margin: 0,
-    padding: "3px 14px 0px"
+    padding: "3px 14px 0px",
   },
   link: {
     textDecoration: "none",
-    color: "#1976d2"
+    color: "#1976d2",
   },
   error: {
     color: "red",
     textAlign: "center",
-    fontSize: "1rem"
+    fontSize: "1rem",
   },
   formControl: {
     margin: "8px 0",
-    minWidth: 120
+    minWidth: 120,
   },
   selectEmpty: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 }));
 
-const NewPost = props => {
+const NewPost = (props) => {
   const classes = useStyles();
   const [error, setError] = useState();
   const [postValues, updatePostValues] = useState({
     title: "",
     description: "",
-    language: ""
+    language: "",
   });
   const formik = useFormik({
     initialValues: postValues,
@@ -67,10 +67,10 @@ const NewPost = props => {
     validationSchema: Yup.object({
       title: Yup.string().required("Required"),
       description: Yup.string().required("Required"),
-      language: Yup.string().required("Required")
+      language: Yup.string().required("Required"),
     }),
 
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       try {
         const updatedPostId = props.match.params.id;
 
@@ -88,10 +88,10 @@ const NewPost = props => {
         setError(err.message);
         console.log(err);
       }
-    }
+    },
   });
 
-  const getPostById = async id => {
+  const getPostById = async (id) => {
     try {
       const { post } = await getPost(id);
       console.log(post);
@@ -99,7 +99,7 @@ const NewPost = props => {
       updatePostValues({
         title: post.title,
         description: post.description,
-        language: post.language
+        language: post.language,
       });
     } catch (err) {
       console.log(err);
@@ -137,8 +137,8 @@ const NewPost = props => {
           }
           FormHelperTextProps={{
             classes: {
-              root: classes.helperText
-            }
+              root: classes.helperText,
+            },
           }}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -157,8 +157,8 @@ const NewPost = props => {
           }
           FormHelperTextProps={{
             classes: {
-              root: classes.helperText
-            }
+              root: classes.helperText,
+            },
           }}
         >
           <InputLabel id="select-outlined-label">Language</InputLabel>
@@ -201,8 +201,8 @@ const NewPost = props => {
           }
           FormHelperTextProps={{
             classes: {
-              root: classes.helperText
-            }
+              root: classes.helperText,
+            },
           }}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

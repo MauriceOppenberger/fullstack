@@ -1,6 +1,7 @@
 const Post = require("../models/post");
 const User = require("../models/user");
 const Comment = require("../models/comment");
+const Profile = require("../models/profile");
 const { validationResult } = require("express-validator");
 
 exports.getPostsByUser = async (req, res, next) => {
@@ -161,22 +162,50 @@ exports.createComment = async (req, res, next) => {
     next(err);
   }
 };
+// exports.getUserProfile = async (req, res, next) => {
+//   try {
+//     const { id } = req.user;
+
+//     const user = await User.findById(id);
+//     if (!user) {
+//       const error = new Error("no user found");
+//       error.statusCode = 400;
+//       throw error;
+//     }
+
+//     // const formattedData = {
+//     //   ...user._doc,
+//     //   password: null,
+//     //   posts: null,
+//     // };
+//     // console.log(formattedData);
+//     // res.status(200).json({ message: "user profile", data: formattedData });
+//   } catch (err) {
+//     console.log(err);
+//     next(err);
+//   }
+// };
+
 exports.getUserProfile = async (req, res, next) => {
   try {
-    const { id } = req.user;
-
-    const user = await User.findById(id);
-    if (!user) {
-      const error = new Error("no user found");
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate("user", ["firstName", "lastName", "email"]);
+    if (!profile) {
+      const error = new Error("no profile found for this user");
       error.statusCode = 400;
       throw error;
     }
-    res.status(200).json({ message: "user profile", data: user });
+    console.log(profile);
+    res.status(200).json({ message: "Profile", data: profile });
   } catch (err) {
     console.log(err);
     next(err);
   }
 };
+
+///create seperate profile schema in order to protect sensitive data
+
 exports.updateUserProfile = async (req, res, next) => {
   const { id } = req.user;
   const {
@@ -184,35 +213,51 @@ exports.updateUserProfile = async (req, res, next) => {
     updatedFirstName,
     updatedLastName,
     updatedEmail,
+    updatedGithub,
+    updatedLinkedIn,
+    updatedWebsite,
   } = req.body;
-  const user = await User.findById(id);
-  if (!user) {
-    const error = new Error("no user found");
-    error.statusCode = 400;
-    throw error;
+  try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const error = new Error("Validation failed");
+      error.statusCode = 422;
+      error.data = errors.array();
+      throw error;
+    }
+    const user = await User.findById(id);
+    if (!user) {
+      const error = new Error("no user found");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    // update the file related the the user
+
+    let filePath;
+    // update if new file
+    if (req.file) {
+      filePath = req.file.path;
+    }
+    // remain same if file not changes
+    else {
+      filePath = null;
+    }
+
+    user.summery = updatedSummery;
+    user.firstName = updatedFirstName;
+    user.lastName = updatedLastName;
+    user.email = updatedEmail;
+    user.resume = filePath;
+    user.social.github = updatedGithub;
+    user.social.linkedIn = updatedLinkedIn;
+    user.social.website = updatedWebsite;
+
+    const updatedUser = await user.save();
+
+    console.log(updatedUser);
+  } catch (err) {
+    next(err);
   }
-
-  // update the file related the the user
-
-  let filePath;
-  // update if new file
-  if (req.file) {
-    filePath = req.file.path;
-  }
-  // remain same if file not changes
-  else {
-    filePath = user.resume;
-  }
-  user.summery = updatedSummery;
-  user.firstName = updatedFirstName;
-  user.lastName = updatedLastName;
-  user.email = updatedEmail;
-  // user.password = user.password;
-  user.resume = filePath;
-  // user._id = user.id;
-  // user.posts = user.posts;
-
-  const updatedUser = await user.save();
-
-  console.log(updatedUser);
 };

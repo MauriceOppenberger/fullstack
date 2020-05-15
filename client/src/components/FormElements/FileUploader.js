@@ -5,6 +5,8 @@ import { Document, Page, pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const PdfContainer = styled.div`
+  width: max-content;
+  margin: auto;
   text-align: center;
   .document {
     margin: 1rem 0;
@@ -22,6 +24,7 @@ const FileUploader = (props) => {
   const filePickerRef = useRef();
 
   useEffect(() => {
+    console.log("effect");
     if (props.file && !file) {
       setPreviewUrl(`http://localhost:8080/${props.file}`);
       return;
@@ -30,12 +33,15 @@ const FileUploader = (props) => {
       return;
     }
     const fileReader = new FileReader();
+
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
     };
+
     fileReader.readAsDataURL(file);
-  }, [file, props.file]);
-  const pickImageHandler = () => {
+  }, [file]);
+
+  const pickFileHandler = () => {
     filePickerRef.current.click();
   };
   const pickHandler = (e) => {
@@ -46,18 +52,26 @@ const FileUploader = (props) => {
       props.setFieldValue("file", pickedFile);
     }
   };
+
+  const removeHandler = () => {
+    setFile(null);
+    setPreviewUrl(null);
+    props.setFieldValue("file", null);
+  };
+  console.log(file);
+  console.log(previewUrl);
   return (
-    <div className="form-control">
+    <PdfContainer>
       <input
         style={{ display: "none" }}
-        type="file"
+        type={props.id}
         ref={filePickerRef}
-        name="file"
+        name={props.id}
         accept=".pdf"
         id={props.id}
         onChange={pickHandler}
       />
-      <PdfContainer>
+      <div>
         <a href={previewUrl} target="_blank">
           <Document className="document" file={previewUrl} renderMode="svg">
             <Page
@@ -69,17 +83,29 @@ const FileUploader = (props) => {
             />
           </Document>
         </a>
+
         <Button
           type="button"
-          onClick={pickImageHandler}
+          onClick={pickFileHandler}
           size="small"
           variant="contained"
           color="primary"
         >
           {props.file ? "Select Different File" : "Select File"}
         </Button>
-      </PdfContainer>
-    </div>
+        {file || props.file ? (
+          <Button
+            type="button"
+            onClick={removeHandler}
+            size="small"
+            variant="contained"
+            color="secondary"
+          >
+            Remove file
+          </Button>
+        ) : null}
+      </div>
+    </PdfContainer>
   );
 };
 

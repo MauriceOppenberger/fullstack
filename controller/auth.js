@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Profile = require("../models/profile");
 const bcrypt = require("bcrypt");
 
 const { validationResult } = require("express-validator");
@@ -10,8 +11,8 @@ exports.isAuthenticated = async (req, res, next) => {
       firstName: req.user.firstName,
       lastName: req.user.lastName,
       id: req.user.id,
-      email: req.user.email
-    }
+      email: req.user.email,
+    },
   });
 };
 
@@ -42,7 +43,7 @@ exports.signup = async (req, res, next) => {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
-      password: hashedPassword
+      password: hashedPassword,
     });
     //Add user to database
     const newUser = await user.save();
@@ -88,7 +89,7 @@ exports.login = async (req, res, next) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      id: user._id.toString()
+      id: user._id.toString(),
     };
     const token = createToken(newUser);
 
@@ -96,7 +97,7 @@ exports.login = async (req, res, next) => {
     res.status(200);
     res.cookie("jwt_token", token, {
       httpOnly: true,
-      maxAge: 60 * 60 * 1000
+      maxAge: 60 * 60 * 1000,
     });
     res.json({ user: newUser });
   } catch (err) {

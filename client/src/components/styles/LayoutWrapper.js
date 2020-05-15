@@ -14,7 +14,7 @@ const LayoutWrapper = styled.main`
   }
   .container {
     max-width: 70vmax;
-    margin: auto;
+    margin: 2rem auto;
   }
   .btn {
     min-width: max-content;

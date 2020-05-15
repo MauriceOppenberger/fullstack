@@ -10,19 +10,19 @@ const useStyles = makeStyles(() => ({
 }));
 const CustomTextField = (props) => {
   const classes = useStyles();
-  const { formik, label, field, required } = props;
+  const { formik, label, field, lineheigth } = props;
+
   return (
     <TextField
+      {...props}
       variant="outlined"
       margin="normal"
-      required={required}
       fullWidth
       id={field}
       label={label}
       name={field}
       type="text"
       autoComplete={field}
-      autoFocus
       error={formik.touched[field] && formik.errors[field] !== undefined}
       helperText={
         formik.touched[field] && formik.errors[field]
