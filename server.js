@@ -29,6 +29,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/uploads/files", express.static(path.join("uploads", "files")));
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 app.use("/", publicRoute);
 app.use("/auth", authRoute);
 app.use("/admin", adminRoute);

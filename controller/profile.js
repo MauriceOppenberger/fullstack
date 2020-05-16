@@ -31,6 +31,7 @@ exports.getProfileById = async (req, res, next) => {
 
 exports.createAndUpdate = async (req, res, next) => {
   const errors = validationResult(req);
+  console.log(req.files);
 
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed");
@@ -62,12 +63,17 @@ exports.createAndUpdate = async (req, res, next) => {
       skill.trim();
       return ` ${skill}`;
     });
-  console.log(updatedSkills);
+
   if (req.file) {
     profileFields.file = req.file.path;
   } else {
     profileFields.file = null;
   }
+  // if (req.image) {
+  //   profileFields.image = req.image.path;
+  // } else {
+  //   profileFields.image = null;
+  // }
 
   //Build social object
   profileFields.social = {};

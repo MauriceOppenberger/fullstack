@@ -12,6 +12,7 @@ import ProfileWrapper from "./styles/ProfileWrapper";
 
 const Profile = ({ user }) => {
   const [profile, updateProfile] = useState({
+    profileImg: "",
     title: "",
     location: "",
     skills: "",
@@ -63,6 +64,7 @@ const Profile = ({ user }) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      image: profile.profileImg ? profile.profileImg : "",
       title: profile.title,
       location: profile.location,
       skills: profile.skills,
@@ -83,6 +85,7 @@ const Profile = ({ user }) => {
       // use formData with multipart/form-data
 
       const {
+        image,
         title,
         location,
         skills,
@@ -92,8 +95,6 @@ const Profile = ({ user }) => {
         linkedIn,
         file,
       } = values;
-
-      console.log(values);
       let formData = new FormData();
       formData.append("updatedTitle", title);
       formData.append("updatedLocation", location);
@@ -103,6 +104,7 @@ const Profile = ({ user }) => {
       formData.append("updatedLinkedIn", linkedIn);
       formData.append("updatedWebsite", website);
       formData.append("file", file);
+      formData.append("file", image);
       axios.post("/profile", formData).then((res) => console.log(res));
     },
   });
@@ -113,7 +115,7 @@ const Profile = ({ user }) => {
   return (
     <ProfileWrapper>
       <p className="welcome">Welcome back {user.firstName},</p>
-      <ImageUploader id="file" />
+      <ImageUploader id="file" setFieldValue={formik.setFieldValue} />
       <h2>{error ? error : "Complete your profile"}</h2>
       <form className="form" noValidate onSubmit={formik.handleSubmit}>
         <section className="about-me">

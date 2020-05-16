@@ -25,11 +25,13 @@ const ImageUploader = (props) => {
     if (e.currentTarget.files && e.currentTarget.files.length === 1) {
       pickedFile = e.currentTarget.files[0];
       setFile(pickedFile);
+      props.setFieldValue("image", pickedFile);
     }
   };
   const removeHandler = () => {
     setFile(null);
     setPreviewUrl(null);
+    props.setFieldValue("image", null);
   };
   return (
     <div>
@@ -37,7 +39,7 @@ const ImageUploader = (props) => {
         style={{ display: "none" }}
         type={props.id}
         ref={ImagePickerRef}
-        name={props.id}
+        name="image"
         accept=".png, .jpg, .jpeg"
         id={props.id}
         onChange={pickHandler}

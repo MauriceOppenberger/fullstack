@@ -12,7 +12,8 @@ const fileUpload = multer({
   }),
   fileFilter: (req, file, cb) => {
     const isValid = file.mimetype === "application/pdf";
-    cb(null, isValid);
+    let error = isValid ? null : new Error("Invalid file extension");
+    cb(error, isValid);
   },
 });
 

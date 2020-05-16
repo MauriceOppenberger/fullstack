@@ -3,6 +3,7 @@ const router = express.Router();
 const profileController = require("../controller/profile");
 const isAuthorized = require("../middleware/auth");
 const fileUpload = require("../middleware/file-upload");
+const imageUpload = require("../middleware/image-upload");
 const { body } = require("express-validator");
 
 // Get current user profile
@@ -12,7 +13,11 @@ router.get("/", isAuthorized, profileController.getProfileById);
 router.post(
   "/",
   isAuthorized,
-  fileUpload.single("file"),
+  //   imageUpload.fields([
+  //     { name: "file", maxCount: 1 },
+  //     { name: "image", maxCount: 1 },
+  //   ]),
+  imageUpload.array("file"),
   [
     body("updatedTitle", "title is required, field can not be empty")
       .trim()
