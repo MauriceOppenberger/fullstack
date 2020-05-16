@@ -17,7 +17,12 @@ router.post(
   //     { name: "file", maxCount: 1 },
   //     { name: "image", maxCount: 1 },
   //   ]),
-  imageUpload.array("file"),
+
+  // use array in order to updload multiple files
+  imageUpload.fields([
+    { name: "file", maxCount: 1 },
+    { name: "image", maxCount: 1 },
+  ]),
   [
     body("updatedTitle", "title is required, field can not be empty")
       .trim()

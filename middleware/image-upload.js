@@ -11,27 +11,25 @@ const FILE_MIME_TYPE = {
 const imageUpload = multer({
   limits: 1000000,
   storage: multer.diskStorage({
-    destination: (req, files, cb) => {
-      console.log(files);
-      // if ((file.mimetype = IMAGE_MIME_TYPE[file.mimetype])) {
-      //   cb(null, "uploads/images");
-      // }
-      // if ((file.mimetype = FILE_MIME_TYPE[file.mimetype])) {
-      //   cb(null, "uploads/files");
-      // }
+    destination: (req, file, cb) => {
+      if (file.fieldname === "image") {
+        cb(null, "uploads/images");
+      }
+      if (file.fieldname === "file") {
+        cb(null, "uploads/files");
+      }
     },
-    filename: (req, files, cb) => {
-      console.log(files);
-      // if ((file.mimetype = IMAGE_MIME_TYPE[file.mimetype])) {
-      //   const ext = MIME_TYPE[file.mimetype];
-      //   cb(
-      //     null,
-      //     `${req.user.firstName}_${req.user.lastName}-profile-image.${ext}`
-      //   );
-      // }
-      // if ((file.mimetype = FILE_MIME_TYPE[file.mimetype])) {
-      //   cb(null, file.originalname);
-      // }
+    filename: (req, file, cb) => {
+      if (file.fieldname === "image") {
+        const ext = IMAGE_MIME_TYPE[file.mimetype];
+        cb(
+          null,
+          `${req.user.firstName}_${req.user.lastName}-profile-image.${ext}`
+        );
+      }
+      if (file.fieldname === "file") {
+        cb(null, file.originalname);
+      }
     },
   }),
   fileFilter: (req, file, cb) => {

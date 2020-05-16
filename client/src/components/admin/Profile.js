@@ -104,7 +104,7 @@ const Profile = ({ user }) => {
       formData.append("updatedLinkedIn", linkedIn);
       formData.append("updatedWebsite", website);
       formData.append("file", file);
-      formData.append("file", image);
+      formData.append("image", image);
       axios.post("/profile", formData).then((res) => console.log(res));
     },
   });
