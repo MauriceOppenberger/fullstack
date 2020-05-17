@@ -6,7 +6,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const PdfContainer = styled.div`
   width: max-content;
-  margin: auto;
+  /* margin: auto; */
   text-align: center;
   .document {
     margin: 1rem 0;

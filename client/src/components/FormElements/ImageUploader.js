@@ -1,5 +1,40 @@
 import React, { useRef, useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
+import styled from "styled-components";
+
+import { MdDeleteForever, MdAddAPhoto, MdRefresh } from "react-icons/md";
+
+const ImageUploaderWrapper = styled.div`
+  .hidden {
+    display: none;
+  }
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+
+  .btn {
+    background: none;
+    border: none;
+  }
+  .delete svg {
+    border-bottom: 1px solid #ff0000;
+  }
+  .new svg {
+    border-bottom: 1px solid #0e6b0e;
+  }
+  .btn:hover svg {
+    transform: scale(1.4);
+    transition: all 0.2s ease;
+  }
+`;
+const PreviewContainer = styled.div`
+  img {
+    width: 75px;
+    height: 75px;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 100%;
+  }
+`;
 const ImageUploader = (props) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
@@ -7,6 +42,9 @@ const ImageUploader = (props) => {
   const ImagePickerRef = useRef();
 
   useEffect(() => {
+    if (props.file) {
+      setPreviewUrl(`http://localhost:3000/${props.file}`);
+    }
     if (!file) {
       return;
     }
@@ -16,7 +54,7 @@ const ImageUploader = (props) => {
       setPreviewUrl(fileReader.result);
     };
     fileReader.readAsDataURL(file);
-  }, [file]);
+  }, [file, props.file]);
   const pickImageHandler = () => {
     ImagePickerRef.current.click();
   };
@@ -34,9 +72,9 @@ const ImageUploader = (props) => {
     props.setFieldValue("image", null);
   };
   return (
-    <div>
+    <ImageUploaderWrapper>
       <input
-        style={{ display: "none" }}
+        className="hidden"
         type={props.id}
         ref={ImagePickerRef}
         name="image"
@@ -45,31 +83,33 @@ const ImageUploader = (props) => {
         onChange={pickHandler}
       />
       <div>
-        <div className="preview">
-          <img src={previewUrl} alt="" />
-        </div>
-        <Button
-          type="button"
-          onClick={pickImageHandler}
-          size="small"
-          variant="contained"
-          color="primary"
-        >
-          {file ? "Change Image " : "Select Image"}
-        </Button>
-        {file ? (
-          <Button
-            type="button"
-            onClick={removeHandler}
-            size="small"
-            variant="contained"
-            color="secondary"
-          >
-            Remove Image
-          </Button>
-        ) : null}
+        <PreviewContainer>
+          {previewUrl ? (
+            <img src={previewUrl} alt="profile image" />
+          ) : (
+            <img src="" alt="" />
+          )}
+        </PreviewContainer>
+        <ButtonContainer>
+          <button className="btn new" type="button" onClick={pickImageHandler}>
+            {previewUrl ? (
+              <MdRefresh size={18} alt="change image" />
+            ) : (
+              <MdAddAPhoto size={18} alt="add new image" />
+            )}
+          </button>
+          {previewUrl ? (
+            <button
+              className="btn delete"
+              type="button"
+              onClick={removeHandler}
+            >
+              <MdDeleteForever size={18} alt="delete image" />
+            </button>
+          ) : null}
+        </ButtonContainer>
       </div>
-    </div>
+    </ImageUploaderWrapper>
   );
 };
 

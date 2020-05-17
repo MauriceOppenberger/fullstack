@@ -12,7 +12,7 @@ import ProfileWrapper from "./styles/ProfileWrapper";
 
 const Profile = ({ user }) => {
   const [profile, updateProfile] = useState({
-    profileImg: "",
+    image: "",
     title: "",
     location: "",
     skills: "",
@@ -28,6 +28,7 @@ const Profile = ({ user }) => {
   const [error, updateError] = useState(null);
 
   useEffect(() => {
+    console.log("effect profile component");
     if (loading) {
       // fetch all user information and update component state
       axios
@@ -64,7 +65,7 @@ const Profile = ({ user }) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      image: profile.profileImg ? profile.profileImg : "",
+      image: profile.image,
       title: profile.title,
       location: profile.location,
       skills: profile.skills,
@@ -72,7 +73,7 @@ const Profile = ({ user }) => {
       github: profile.social.github,
       linkedIn: profile.social.linkedIn,
       website: profile.social.website,
-      file: profile.file ? profile.file : "",
+      file: profile.file,
     },
     // Set Required fields
     validationSchema: Yup.object({
@@ -114,9 +115,19 @@ const Profile = ({ user }) => {
   console.log(formik.values);
   return (
     <ProfileWrapper>
-      <p className="welcome">Welcome back {user.firstName},</p>
-      <ImageUploader id="file" setFieldValue={formik.setFieldValue} />
-      <h2>{error ? error : "Complete your profile"}</h2>
+      <div className="headline">
+        <span className="text-container">
+          <p className="title">Welcome back {user.firstName},</p>
+          <p className="tagline">{error ? error : "Complete your profile"}</p>
+        </span>
+        <span className="image-container">
+          <ImageUploader
+            id="file"
+            setFieldValue={formik.setFieldValue}
+            file={profile.image}
+          />
+        </span>
+      </div>
       <form className="form" noValidate onSubmit={formik.handleSubmit}>
         <section className="about-me">
           <p className="title">About you</p>
@@ -169,11 +180,14 @@ const Profile = ({ user }) => {
           />
         </section>
 
-        <FileUploader
-          file={formik.values.file}
-          id="file"
-          setFieldValue={formik.setFieldValue}
-        />
+        <section className="file">
+          <p className="title">Supporting Documents</p>
+          <FileUploader
+            file={formik.values.file}
+            id="file"
+            setFieldValue={formik.setFieldValue}
+          />
+        </section>
         <Button
           type="submit"
           fullWidth

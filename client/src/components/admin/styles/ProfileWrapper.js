@@ -4,12 +4,30 @@ const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
-
-  .welcome {
-    text-transform: capitalize;
-    font-size: max(1.5rem, 2.2vw);
-    margin-bottom: 0;
+  .headline {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
   }
+  .image-container {
+    flex: 1;
+    max-width: max-content;
+  }
+  .text-container {
+    flex: 1;
+    width: auto;
+    .title {
+      text-transform: capitalize;
+      font-size: max(1.5rem, 2.2vw);
+      margin: 0;
+    }
+    .tagline {
+      font-size: max(0.9rem, 1.3vw);
+      margin: 0;
+    }
+  }
+
   .form {
     width: 100%; // Fix IE 11 issue.
     margin-top: 1rem;
