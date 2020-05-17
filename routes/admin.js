@@ -3,7 +3,6 @@ const router = express.Router();
 const adminController = require("../controller/admin");
 const isAuthorized = require("../middleware/auth");
 const { body } = require("express-validator");
-const fileUpload = require("../middleware/file-upload");
 
 // Get all Posts by user id;
 router.get("/posts", isAuthorized, adminController.getPostsByUser);
@@ -72,16 +71,5 @@ router.post(
 router.delete("/posts/:id", isAuthorized, adminController.removePostById);
 
 // Update Post
-
-// Get user profile by user id
-router.get("/user/profile", isAuthorized, adminController.getUserProfile);
-
-// Update user profile
-router.post(
-  "/user/profile",
-  isAuthorized,
-  fileUpload.single("file"),
-  adminController.updateUserProfile
-);
 
 module.exports = router;

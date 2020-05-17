@@ -85,23 +85,25 @@ const FileUploader = (props) => {
         </a>
 
         <Button
+          className="btn"
           type="button"
           onClick={pickFileHandler}
           size="small"
           variant="contained"
           color="primary"
         >
-          {props.file ? "Select Different File" : "Select File"}
+          {props.file ? "Select Different" : "Select File"}
         </Button>
         {file || props.file ? (
           <Button
+            className="btn"
             type="button"
             onClick={removeHandler}
             size="small"
             variant="contained"
             color="secondary"
           >
-            Remove file
+            Remove
           </Button>
         ) : null}
       </div>

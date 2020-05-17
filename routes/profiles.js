@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const profileController = require("../controller/profile");
 const isAuthorized = require("../middleware/auth");
-const fileUpload = require("../middleware/file-upload");
 const imageUpload = require("../middleware/image-upload");
 const { body } = require("express-validator");
 
@@ -13,12 +12,7 @@ router.get("/", isAuthorized, profileController.getProfileById);
 router.post(
   "/",
   isAuthorized,
-  //   imageUpload.fields([
-  //     { name: "file", maxCount: 1 },
-  //     { name: "image", maxCount: 1 },
-  //   ]),
-
-  // use array in order to updload multiple files
+  // use fields array in order to updload multiple files
   imageUpload.fields([
     { name: "file", maxCount: 1 },
     { name: "image", maxCount: 1 },

@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const Comment = require("../models/comment");
+const Profile = require("../models/profile");
 
 exports.getPosts = async (req, res, next) => {
   try {
@@ -35,12 +36,27 @@ exports.getPostById = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
+
+    const profile = await Profile.findOne({ user: post.creator._id });
+
+    if (profile) {
+      //Something without the profile
+    }
+    const data = {
+      ...post._doc,
+      creator: {
+        ...post._doc.creator._doc,
+        image: profile.image,
+        title: profile.title,
+      },
+    };
+    console.log(data);
     // if (post.creator._id.toString() !== req.user.id.toString()) {
     //   const error = new Error("no allowed to view this post");
     //   error.statusCode = 403;
     //   throw error;
     // }
-    res.status(200).json({ post: post });
+    res.status(200).json({ post: data });
   } catch (err) {
     console.log(err);
     next(err);

@@ -31,7 +31,7 @@ const Sidebar = () => {
                         <RiFileList2Line size={26} />
                       </span>
                       <span className="text">
-                        <Button size="medium" className="btn" type="button">
+                        <Button size="medium" className="nav-btn" type="button">
                           Open
                         </Button>
                       </span>
@@ -43,7 +43,7 @@ const Sidebar = () => {
                         <RiAddLine size={26} />
                       </span>
                       <span className="text">
-                        <Button size="medium" className="btn" type="button">
+                        <Button size="medium" className="nav-btn" type="button">
                           New
                         </Button>
                       </span>
@@ -59,7 +59,7 @@ const Sidebar = () => {
                         <RiUser6Line size={26} />
                       </span>
                       <span className="text">
-                        <Button size="medium" className="btn" type="button">
+                        <Button size="medium" className="nav-btn" type="button">
                           Profile
                         </Button>
                       </span>
@@ -75,7 +75,7 @@ const Sidebar = () => {
                         <RiLogoutBoxLine size={26} />
                       </span>
                       <span className="text">
-                        <Button size="medium" className="btn" type="button">
+                        <Button size="medium" className="nav-btn" type="button">
                           Logout
                         </Button>
                       </span>
@@ -95,7 +95,7 @@ const Sidebar = () => {
         <ul className="nav-list">
           <li className="nav-item">
             <NavLink to="/" activeClassName="active">
-              <Button variant="contained" className="btn" type="submit">
+              <Button variant="contained" className="nav-btn" type="submit">
                 Open
               </Button>
             </NavLink>

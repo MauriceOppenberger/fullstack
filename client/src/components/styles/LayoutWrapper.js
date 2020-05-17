@@ -16,24 +16,27 @@ const LayoutWrapper = styled.main`
     max-width: 70vmax;
     margin: 2rem auto;
   }
-  .btn {
-    min-width: max-content;
+  .nav-btn {
+    border-bottom: 3px solid transparent;
     background: none;
     border-radius: 0;
-    border-bottom: 3px solid transparent;
-    /* margin: 0 0.5rem 0 0; */
+  }
+  .btn {
+    border-radius: 0;
+
+    margin: 0 0.5rem 0 0;
     /* font-size: 1rem; */
-    padding: 0;
+    border-radius: 3px;
   }
 
   .btn-edit:hover {
     background: orange;
     color: var(--mainWhite);
   }
-  .btn-delete:hover {
+  /* .btn-delete:hover {
     background: red;
     color: var(--mainWhite);
-  }
+  } */
 
   .active button {
     border-bottom: 3px solid orange;

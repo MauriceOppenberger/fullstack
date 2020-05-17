@@ -20,7 +20,7 @@ const fetchPostReducer = (state, action) => {
       return {
         ...state,
         post: action.data,
-        loading: false
+        loading: false,
       };
     case "failed":
       return { ...state, loading: false, error: action.message };
@@ -29,16 +29,16 @@ const fetchPostReducer = (state, action) => {
   }
 };
 
-const Post = props => {
+const Post = (props) => {
   const [state, dispatch] = useReducer(fetchPostReducer, {
     loading: true,
     error: null,
-    post: null
+    post: null,
   });
   const [addComment, updateAddComment] = useState(false);
   const [newComment, updateNewComment] = useState([]);
 
-  const fetchPost = async id => {
+  const fetchPost = async (id) => {
     try {
       dispatch({ type: "fetching" });
       const { post } = await getPost(id);
@@ -47,6 +47,7 @@ const Post = props => {
         const error = new Error("No post found");
         throw error;
       }
+      console.log(post);
       dispatch({ type: "success", data: post });
     } catch (err) {
       console.log(err);
@@ -61,7 +62,7 @@ const Post = props => {
     return () => clearTimeout(id);
   }, []);
 
-  const handleDelete = async id => {
+  const handleDelete = async (id) => {
     try {
       const res = await deletePost(id);
 
@@ -71,17 +72,17 @@ const Post = props => {
       }
       props.history.push({
         pathname: "/dashboard/open-posts",
-        state: { message: "Post Deleted!" }
+        state: { message: "Post Deleted!" },
       });
     } catch (err) {
       console.log(err);
     }
   };
-  const handleNewComment = data => {
+  const handleNewComment = (data) => {
     updateAddComment(false);
     //update UI based on local state
     //avaid making new fetch request for newly added comments
-    updateNewComment(prev => {
+    updateNewComment((prev) => {
       return [...prev, data];
     });
   };
@@ -90,41 +91,66 @@ const Post = props => {
   console.log(state);
   if (loading) {
     return (
-      <div className="post-container">
-        <div style={{ width: "250px", margin: "0 auto" }}>
-          <Loading />
+      <SinglePostWrapper>
+        <div className="post-container">
+          <div style={{ width: "250px", margin: "0 auto" }}>
+            <Loading />
+          </div>
         </div>
-      </div>
+      </SinglePostWrapper>
     );
   }
   if (!loading && error) {
     return (
-      <div className="post-container">
-        <div style={{ width: "250px", margin: "0 auto" }}>
-          <h2>{error}</h2>
+      <SinglePostWrapper>
+        <div className="post-container">
+          <div style={{ width: "250px", margin: "0 auto" }}>
+            <h2>{error}</h2>
+          </div>
         </div>
-      </div>
+      </SinglePostWrapper>
     );
   }
   console.log(newComment);
   return (
     <AuthContext.Consumer>
-      {context => {
+      {(context) => {
         return (
           <SinglePostWrapper>
             <div className="post-container">
-              <h3>{post.title}</h3>
-              <div className="description">
+              <div className="meta-info">
+                {post.creator.image ? (
+                  <span className="image-container">
+                    <img
+                      className="author-image"
+                      src={`http://localhost:3000/${post.creator.image}`}
+                      alt={`${post.creator.firstName}-${post.creator.lastName} profile image`}
+                    />
+                  </span>
+                ) : null}
+
+                <span className="text-container">
+                  <p className="author-name">
+                    {" "}
+                    {post.creator.firstName} {post.creator.lastName}
+                  </p>
+                  <p className="author-title">
+                    {post.creator.title ? post.creator.title : null}{" "}
+                  </p>
+                </span>
+              </div>
+
+              <div className="post-headline">
+                <p className="post-title">{post.title}</p>
+              </div>
+
+              <div className="post-description">
                 <Highlight language={post.language} style={styles}>
                   {post.description}
                 </Highlight>
-              </div>
-              <div className="post-info">
-                <p>
-                  {post.creator.firstName} {post.creator.lastName}
-                </p>
                 <p> {new Date(post.createdAt).toUTCString()}</p>
               </div>
+
               <div className="comments-container">
                 <Comments comments={post.comments} />
 
@@ -139,9 +165,9 @@ const Post = props => {
                               code: data.code,
                               creator: {
                                 firstName: context.user.firstName,
-                                lastName: context.user.lastName
+                                lastName: context.user.lastName,
                               },
-                              createdAt: data.createdAt
+                              createdAt: data.createdAt,
                             }}
                           />
                         </li>
@@ -167,13 +193,14 @@ const Post = props => {
                       ? updateAddComment(true)
                       : props.history.push({
                           pathname: "/login",
-                          state: { from: props.location }
+                          state: { from: props.location },
                         })
                   }
                   variant="contained"
-                  size="medium"
+                  size="small"
                   className="btn btn-edit"
                   type="submit"
+                  color="primary"
                 >
                   Comment
                 </Button>
@@ -184,17 +211,19 @@ const Post = props => {
                         props.history.push(`/dashboard/edit-post/${post._id}`)
                       }
                       variant="contained"
-                      size="medium"
+                      size="small"
                       className="btn btn-edit"
                       type="submit"
+                      color="primary"
                     >
                       Edit Post
                     </Button>
                     <Button
                       variant="contained"
-                      size="medium"
+                      size="small"
                       className="btn btn-delete"
                       type="submit"
+                      color="secondary"
                       onClick={() => handleDelete(post._id)}
                     >
                       DELETE
